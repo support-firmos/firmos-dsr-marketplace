@@ -314,7 +314,7 @@ const clientName = sessionData.client
               Strategic FirmOS Solutions
             </h1>
             <p className="text-gray-300 max-w-2xl mx-auto">
-              Elevate your accounting practice with our meticulously crafted suite of professional tools. Select the optimal FirmOS package to revolutionize your firm's efficiency, client engagement, and growth potential.
+              Elevate your accounting practice with our meticulously crafted suite of professional tools. Select the optimal FirmOS package to revolutionize your firm&apos;s efficiency, client engagement, and growth potential.
             </p>
           </motion.div>
           <motion.div
