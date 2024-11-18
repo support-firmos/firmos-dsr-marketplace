@@ -1,18 +1,21 @@
 'use client'
+
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Badge } from "@/components/ui/badge"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Check, Info, MousePointerClick } from 'lucide-react'
+import { Check, Info } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from "@/components/ui/dialog"
-
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
 
 // Add these new types
 type SessionData = {
@@ -25,218 +28,195 @@ type SessionData = {
   };
 };
 
-
-// export function BlockPage() {
 export function BlockPage({ sessionData }: { sessionData: SessionData }) {
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null)
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [showPillarModal, setShowPillarModal] = useState(false)
+  const [selectedPillar, setSelectedPillar] = useState<string | null>(null)
+  const [selectedPillarCombo, setSelectedPillarCombo] = useState<string | null>(null)
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false)
+  const [confirmationMessage, setConfirmationMessage] = useState('')
   const [loadingText, setLoadingText] = useState("Getting things ready...")
-  const [error, setError] = useState<string | null>(null)
 
   const LOADING_DELAY = 7000; // 7 seconds
   const loadingMessages = [
     "Getting things ready...",
-    "Calculating totals...",
+    "Preparing your package...",
     "Almost there!"
   ]
 
-  const features = {
-    'growth': [
-      "1 firm's core operation",
-      "Custom AI Workflow Automations",
-      "Dedicated Support",
-      "Basic Analytics"
-    ],
-    'accelerator': [
-      "2 firm's core operations",
-      "Custom AI Workflow Automations",
-      "Dedicated Support",
-      "Advance Analytics"
-    ],
-    'mastery': [
-      "Complete firm's core operations",
-      "Custom AI Workflow Automations",
-      "Dedicated Support",
-      "Advance Analytics",
-      "AI-Driven Insights and Recommendations"
-    ],
-    'consulting': [
-      "Structured Operational Guidance",
-      "Actionable Financial Strategy Support"
-    ]
-  };
+  const pillars = {
+    'business-dev': {
+      name: 'Business Development',
+      description: 'Enhance lead generation and client acquisition strategies.'
+    },
+    'operations': {
+      name: 'Operations',
+      description: 'Streamline internal processes and improve efficiency.'
+    },
+    'talent': {
+      name: 'Talent',
+      description: 'Optimize talent management and team performance.'
+    }
+  }
+
+  const pillarCombos = {
+    'business-dev-talent': {
+      name: 'Business Development + Talent',
+      description: 'Boost client acquisition while optimizing team performance.'
+    },
+    'talent-operations': {
+      name: 'Talent + Operations',
+      description: 'Enhance team efficiency and streamline internal processes.'
+    },
+    'business-dev-operations': {
+      name: 'Business Development + Operations',
+      description: 'Improve client acquisition and internal operational efficiency.'
+    }
+  }
 
   const products = [
     {
-      id: 'growth',
-      title: '[TEST] Product',
+      id: '1-pillar',
+      title: 'FirmOS Growth Platform - Core Focus (1 Pillar)',
       heading: 'FIRMOS GROWTH PLATFORM',
       subtitle: 'Core Focus',
       description: '(1 Pillar)',
-      fullDescription: 'Focus on one core area of your firm\'s operations. Whether you\'re looking to enhance lead generation, streamline talent management, improve client delivery, or optimize financial processes, FirmOS provides a tailored solution for your chosen pillar.',
+      fullDescription: 'Focus on one core area of your firm\'s operations. Choose between Business Development, Operations, or Talent management.',
       price: 2450,
-      savings: null
+      savings: null,
+      features: [
+        "1 firm's core operation",
+        "Custom AI Workflow Automations",
+        "Dedicated Support",
+        "Basic Analytics"
+      ]
     },
     {
-      id: 'accelerator',
-      title: 'FirmOS Business Accelerator (2 Pillars) - $3,450 (30% Savings)',
+      id: '2-pillars',
+      title: 'FirmOS Business Accelerator (2 Pillars)',
       heading: 'FIRMOS BUSINESS ACCELERATOR',
       subtitle: 'Dual Focus',
       description: '(2 Pillars)',
-      fullDescription: 'Optimize two critical aspects of your firm\'s operations. Choose the combination that fits your current needs—whether it\'s increasing client acquisition and improving internal efficiency, or enhancing financial control and client fulfillment.',
+      fullDescription: 'Optimize two critical aspects of your firm\'s operations. Choose any combination of Business Development, Operations, and Talent management.',
       price: 3450,
-      savings: 30
+      savings: 30,
+      features: [
+        "2 firm's core operations",
+        "Custom AI Workflow Automations",
+        "Dedicated Support",
+        "Advanced Analytics"
+      ]
     },
     {
-      id: 'mastery',
-      title: 'FirmOS Operations Mastery (3 Pillars) - $4,450 (40% Savings)',
+      id: '3-pillars',
+      title: 'FirmOS Operations Mastery (3 Pillars)',
       heading: 'FIRMOS OPERATIONS MASTERY',
       subtitle: 'Complete Solution',
       description: '(3 Pillars)',
-      fullDescription: 'Full operational support across Business Development, Talent, Fulfillment, and Finance. FirmOS equips you with a complete solution to manage and scale your firm efficiently, ensuring alignment across all key functions.',
+      fullDescription: 'Full operational support across Business Development, Operations, and Talent management. FirmOS equips you with a complete solution to manage and scale your firm efficiently.',
       price: 4450,
-      savings: 40
+      savings: 40,
+      features: [
+        "Complete firm's core operations",
+        "Custom AI Workflow Automations",
+        "Dedicated Support",
+        "Advanced Analytics",
+        "AI-Driven Insights and Recommendations"
+      ]
     },
     {
       id: 'consulting',
-      title: 'FirmOS Consulting Subscription - $750/month',
+      title: 'FirmOS Consulting Subscription',
       heading: 'FIRMOS CONSULTING',
       subtitle: 'BI-WEEKLY STRATEGY',
       description: 'SESSIONS',
-      fullDescription: 'Designed for firms needing structured support, this plan offers two 60-minute sessions monthly with tailored advice, templates, and actionable steps to improve operations, optimize financial strategies, or enhance team performance.',
+      fullDescription: 'Designed for firms needing structured support, this plan offers two 60-minute sessions monthly with tailored advice, templates, and actionable steps to improve operations, optimize strategies, or enhance team performance.',
       price: 750,
       isMonthly: true,
-      savings: null
+      savings: null,
+      features: [
+        "Structured Operational Guidance",
+        "Actionable Financial Strategy Support",
+        "Bi-weekly 60-minute Sessions",
+        "Tailored Advice and Templates"
+      ]
     }
   ]
+  
+// Construct the client name
+const clientName = sessionData.client 
+? `${sessionData.client.givenName} ${sessionData.client.familyName}`
+: sessionData.company?.name || "Unknown Client";
 
-  const handleSelectPackage = async () => { 
-    // Check if a product is selected
-    if (!selectedProduct) {
-        setError("Please select a package first");
-        return;
+  const handleSelectPackage = (productId: string) => {
+    setSelectedProduct(productId)
+    if (productId === '1-pillar' || productId === '2-pillars') {
+      setShowPillarModal(true)
+    } else if (productId === '3-pillars') {
+      setConfirmationMessage('You have selected the 3-pillar package, which includes Business Development, Operations, and Talent management. Would you like to proceed?')
+      setShowConfirmationModal(true)
+    } else if (productId === 'consulting') {
+      setConfirmationMessage('You have selected the FirmOS Consulting package. Would you like to proceed?')
+      setShowConfirmationModal(true)
     }
+  }
 
-    setIsLoading(true);
-    setError(null);
-    let currentMessage = 0;
-    setLoadingText(loadingMessages[currentMessage]);
-
-    // Get the selected product details
-    const selectedProductDetails = products.find(p => p.id === selectedProduct);
-    if (!selectedProductDetails) {
-        setError("Selected product not found");
-        setIsLoading(false);
-        return;
+  const handlePillarSelection = (pillar: string) => {
+    if (selectedProduct === '1-pillar') {
+      setSelectedPillar(pillar)
     }
+  }
 
-     // Construct the client name
-    const clientName = sessionData.client 
-      ? `${sessionData.client.givenName} ${sessionData.client.familyName}`
-      : sessionData.company?.name || "Unknown Client";
-      
-    // const clientName = "Earyl Buque";
+  const handlePillarComboSelection = (combo: string) => {
+    setSelectedPillarCombo(combo)
+  }
 
-    // Single encode the parameters with proper space and bracket handling
-const encodeParam = (str: string) => {
-  return str.split('').map(char => {
-    switch(char) {
-      case ' ': return '%20';
-      case '[': return '%5B';
-      case ']': return '%5D';
-      case '(': return '%28';
-      case ',': return '%2C';
-      case ')': return '%29';
-      case '%': return '%25';
-      default: return char;
+  const handlePillarConfirmation = () => {
+    setShowPillarModal(false)
+    if (selectedProduct === '1-pillar') {
+      setConfirmationMessage(`You have selected the ${pillars[selectedPillar as keyof typeof pillars].name} pillar. Would you like to proceed?`)
+    } else if (selectedProduct === '2-pillars') {
+      setConfirmationMessage(`You have selected the ${pillarCombos[selectedPillarCombo as keyof typeof pillarCombos].name} pillars. Would you like to proceed?`)
     }
-  }).join('');
-};
+    setShowConfirmationModal(true)
+  }
 
-    const url = `/generate-invoice?client_name=${encodeParam(clientName)}&product_name=${encodeParam(selectedProductDetails.title)}`;
-
-    console.group('📡 Invoice Generation Request');
-    console.log('🏷️ Selected Product:', selectedProductDetails);
-    console.log('👤 Client Name:', clientName);
-    console.log('🔗 Full URL:', url);
-    console.groupEnd();
-
-    try {
-        console.time('Invoice Generation Duration');
-        
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'accept': 'application/json'
-            },
-            body: ''
-        });
-
-        console.timeEnd('Invoice Generation Duration');
-
-        const data = await response.json();
-
-        console.group('📥 Invoice Generation Response');
-        console.log('📊 Status:', response.status);
-        console.log('📄 Response Data:', data);
-        console.groupEnd();
-
-        if (!response.ok) {
-            throw new Error(`API error: ${response.status} - ${JSON.stringify(data)}`);
-        }
-
-        // Process loading messages
-        const interval = setInterval(() => {
-            currentMessage++;
-            if (currentMessage < loadingMessages.length) {
-                setLoadingText(loadingMessages[currentMessage]);
-            }
-            if (currentMessage >= loadingMessages.length) {
-                clearInterval(interval);
-                setIsLoading(false);
-                setShowSuccessModal(true);
-            }
-        }, LOADING_DELAY / loadingMessages.length);
-
-    } catch (err) {
-        console.group('❌ Invoice Generation Error');
-        console.error('Error Details:', err);
-        console.trace('Error Stack Trace:');
-        console.groupEnd();
-
-        setError(err instanceof Error ? err.message : 'An error occurred');
-        setIsLoading(false);
-    }
-};
-
-
-  const handleInvoiceClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    setShowSuccessModal(false)
+  const handleConfirmation = () => {
+    setShowConfirmationModal(false)
+    setIsLoading(true)
+    let currentMessage = 0
+    setLoadingText(loadingMessages[currentMessage])
+    
+    const interval = setInterval(() => {
+      currentMessage++
+      if (currentMessage < loadingMessages.length) {
+        setLoadingText(loadingMessages[currentMessage])
+      }
+      if (currentMessage >= loadingMessages.length) {
+        clearInterval(interval)
+        setIsLoading(false)
+        window.open('https://app.firmos.ai/contracts?view=templates', '_blank')
+      }
+    }, LOADING_DELAY / loadingMessages.length)
   }
 
   useEffect(() => {
     document.title = 'Product Selection'
   }, [])
 
-  // Sample Implementation
-  // const invoiceurl = `https://app.firmos.ai/invoices/pay?invoiceId=${encodeParam(clientName)}&product_name=${encodeParam(selectedProductDetails.title)}`;
-
   return (
     <div className="min-h-screen bg-[#121212] p-6 relative">
-      {error && (
-        <div className="fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded shadow-lg">
-          {error}
-        </div>
-      )}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-950/40 via-black/60 to-blue-950/40 pointer-events-none" />
+
       <AnimatePresence>
         {isLoading && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50"
+            className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
           >
             <div className="text-white text-center relative w-80 h-80">
               <motion.div
@@ -322,16 +302,28 @@ const encodeParam = (str: string) => {
         )}
       </AnimatePresence>
 
-      <div className="max-w-6xl mx-auto">
-        <header className="mb-16 text-center">
-          <h1 className="text-4xl font-bold text-white mb-4">
-            Select Your Package
-          </h1>
-          <p className="text-gray-400">
-            Choose the perfect FirmOS solution for your accounting firm
-          </p>
+      <div className="relative z-10 max-w-6xl mx-auto">
+        <header className="mb-16 text-center pt-28">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="bg-gradient-to-r from-blue-950/90 via-black/95 to-blue-950/90 p-8 rounded-lg shadow-lg mb-8"
+          >
+            <h1 className="text-4xl font-bold text-white mb-4">
+              Strategic FirmOS Solutions
+            </h1>
+            <p className="text-gray-300 max-w-2xl mx-auto">
+              Elevate your accounting practice with our meticulously crafted suite of professional tools. Select the optimal FirmOS package to revolutionize your firm's efficiency, client engagement, and growth potential.
+            </p>
+          </motion.div>
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: "100%" }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+            className="h-1 bg-gradient-to-r from-blue-950 via-white to-blue-950 rounded-full mx-auto"
+          />
         </header>
-
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {products.map((product) => (
@@ -353,12 +345,11 @@ const encodeParam = (str: string) => {
               <Card
                 className={`
                   relative h-full bg-black border-gray-800 overflow-hidden
-                  transition-all duration-300 ease-in-out flex flex-col
-                  ${(hoveredProduct === product.id || selectedProduct === product.id) ? 'shadow-lg shadow-blue-500/20 border-blue-500/50' : ''}
+                  transition-all duration-300 ease-in-out flex flex-col cursor-pointer
+                  ${selectedProduct === product.id ? 'ring-4 ring-blue-500 shadow-xl shadow-blue-500/50' : ''}
+                  ${hoveredProduct === product.id ? 'border-blue-500 border-2' : ''}
                 `}
-                onMouseEnter={() => setHoveredProduct(product.id)}
-                onMouseLeave={() => setHoveredProduct(null)}
-                onClick={() => setSelectedProduct(product.id === selectedProduct ? null : product.id)}
+                onClick={() => handleSelectPackage(product.id)}
               >
                 <CardHeader className="relative">
                   <CardTitle className="text-2xl font-bold text-white mb-2">
@@ -382,7 +373,7 @@ const encodeParam = (str: string) => {
                   </div>
 
                   <div className="space-y-2 mb-6">
-                    {features[product.id as keyof typeof features].map((feature, index) => (
+                    {product.features.map((feature, index) => (
                       <div key={index} className="flex items-start text-gray-300 text-sm">
                         <Check className="mr-2 h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
                         <span>{feature}</span>
@@ -407,33 +398,28 @@ const encodeParam = (str: string) => {
                 </CardContent>
 
                 <CardFooter className="mt-auto">
-                  {selectedProduct === product.id && (
-                    <Button 
-                      className="w-full bg-blue-500 hover:bg-blue-600 text-white transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleSelectPackage()
-                      }}
-                    >
-                      Select Package
-                    </Button>
-                  )}
+                  <AnimatePresence>
+                    {(hoveredProduct === product.id || selectedProduct === product.id) && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 20 }}
+                        className="w-full"
+                      >
+                        <Button 
+                          className="w-full bg-blue-500 hover:bg-blue-600 text-white transition-colors"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleSelectPackage(product.id)
+                          }}
+                        >
+                          Select Package
+                        </Button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </CardFooter>
               </Card>
-              <AnimatePresence>
-                {hoveredProduct === product.id && selectedProduct !== product.id && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-4 py-2 rounded-md shadow-lg"
-                    style={{ zIndex: 10 }}
-                  >
-                    <div className="text-sm font-semibold">Click to Choose</div>
-                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-3 h-3 bg-blue-600 rotate-45"></div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </motion.div>
           ))}
         </div>
@@ -444,28 +430,101 @@ const encodeParam = (str: string) => {
           Custom AI Workflow Automations for Accounting Firms
         </footer>
 
-        <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
-          <DialogContent className="sm:max-w-[425px]">
+        <Dialog open={showPillarModal} onOpenChange={setShowPillarModal}>
+          <DialogContent className="sm:max-w-[425px] bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
             <DialogHeader>
-              <DialogTitle>Success!</DialogTitle>
-              <DialogDescription>
-                Your invoice is ready. Click the link below to view it.
+              <DialogTitle className="text-2xl font-bold">Select Your {selectedProduct === '1-pillar' ? 'Pillar' : 'Pillars'}</DialogTitle>
+              <DialogDescription className="text-gray-600 dark:text-gray-400">
+                {selectedProduct === '1-pillar' 
+                  ? 'Choose one pillar for your FirmOS Growth Platform.'
+                  : 'Choose a pillar combination for your FirmOS Business Accelerator.'}
               </DialogDescription>
             </DialogHeader>
-            <div className="mt-4">
-              <a
-                            // Sample Implementation
-                // href={invoiceurl}
-                //href='https://app.firmos.ai/invoices/pay?invoiceId='
-                href="https://app.firmos.ai/invoices"
-                className="text-blue-500 hover:text-blue-600 transition-colors"
-                onClick={handleInvoiceClick}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Click here to go to the invoice
-              </a>
+            <div className="grid gap-4 py-4">
+              {selectedProduct === '1-pillar' ? (
+                <RadioGroup value={selectedPillar || ''} onValueChange={handlePillarSelection}>
+                  {Object.entries(pillars).map(([key, value]) => (
+                    <div 
+                      key={key} 
+                      className={`flex items-start space-x-2 p-3 rounded-md transition-colors
+                        ${selectedPillar === key ? 'bg-blue-100 dark:bg-blue-900' : 'hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                    >
+                      <RadioGroupItem value={key} id={key} className="mt-1" />
+                      <div>
+                        <Label htmlFor={key} className="font-medium text-lg">{value.name}</Label>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{value.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </RadioGroup>
+              ) : (
+                <RadioGroup value={selectedPillarCombo || ''} onValueChange={handlePillarComboSelection}>
+                  {Object.entries(pillarCombos).map(([key, value]) => (
+                    <div 
+                      key={key} 
+                      className={`flex items-start space-x-2 p-3 rounded-md transition-colors
+                        ${selectedPillarCombo === key ? 'bg-blue-100 dark:bg-blue-900' : 'hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                    >
+                      <RadioGroupItem value={key} id={key} className="mt-1" />
+                      <div>
+                        <Label htmlFor={key} className="font-medium text-lg">{value.name}</Label>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{value.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </RadioGroup>
+              )}
             </div>
+            <DialogFooter>
+              <Button 
+                onClick={handlePillarConfirmation} 
+                disabled={(selectedProduct === '1-pillar' && !selectedPillar) || (selectedProduct === '2-pillars' && !selectedPillarCombo)}
+                className="w-full bg-blue-500 hover:bg-blue-600 text-white transition-colors"
+              >
+                Proceed with {selectedProduct === '1-pillar' ? 'this pillar' : 'these pillars'}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={showConfirmationModal} onOpenChange={setShowConfirmationModal}>
+          <DialogContent className="sm:max-w-[425px] bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-bold">Confirm Your Selection</DialogTitle>
+            </DialogHeader>
+            <DialogDescription className="text-gray-600 dark:text-gray-400 py-4">
+              {confirmationMessage.includes('. ') ? (
+                confirmationMessage.split('. ').map((sentence, index) => (
+                  <p key={index}>
+                    {index === 0 ? (
+                      <>
+                        You have selected the{' '}
+                        <span className="font-semibold text-blue-600 dark:text-blue-400">
+                          {sentence.split('the ')[1]?.split('. Would')[0] || sentence}
+                        </span>
+                        .
+                      </>
+                    ) : (
+                      sentence + '.'
+                    )}
+                  </p>
+                ))
+              ) : (
+                <p>
+                  <span className="font-semibold text-blue-600 dark:text-blue-400">
+                    {confirmationMessage}
+                  </span>
+                </p>
+              )}
+            </DialogDescription>
+            <DialogFooter>
+              <Button 
+                onClick={handleConfirmation}
+                className="w-full bg-green-500 hover:bg-green-600 text-white transition-colors"
+              >
+                Confirm and Proceed
+              </Button>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>
