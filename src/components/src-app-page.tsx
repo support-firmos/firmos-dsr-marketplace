@@ -230,7 +230,8 @@ const consultingServices = '6b5f3ef9-6fff-4861-9758-29b804f22167';
         },
         body: JSON.stringify({
           contractTemplateId,
-          recipientId: sessionData.client?.id || "5e0c8a63-c6ca-420d-9418-4465257bafc3"
+          // recipientId: sessionData.client?.id || "5e0c8a63-c6ca-420d-9418-4465257bafc3"
+          recipientId: sessionData.client?.id
         }),
       });
   
