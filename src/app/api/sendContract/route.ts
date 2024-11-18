@@ -1,21 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const COPILOT_API_KEY = process.env.COPILOT_API_KEY;
+const COPILOT_API_KEY = process.env.INVOICE_API_KEY;
 
 export async function POST(req: NextRequest) {
-  const { recipientId, contractTemplateId } = await req.json();
-
-  const url = 'https://api.copilot.com/v1/contracts';
-
   try {
-    const response = await fetch(url, {
+    const { recipientId, contractTemplateId } = await req.json();
+
+    // Validate inputs
+    if (!recipientId || !contractTemplateId) {
+      console.error('🚨 Missing required fields:', { recipientId, contractTemplateId });
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    console.log('📤 Sending request to Copilot API:', { recipientId, contractTemplateId });
+
+    const response = await fetch('https://api.copilot.com/v1/contracts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'accept': 'application/json',
         'X-API-KEY': COPILOT_API_KEY || '',
       },
-      body: JSON.stringify({ recipientId, contractTemplateId })
+      body: JSON.stringify({ recipientId, contractTemplateId }),
     });
 
     const data = await response.json();
@@ -26,6 +32,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(data);
   } catch (error: any) {
+    console.error('❌ API Error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

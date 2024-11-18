@@ -38,6 +38,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false)
   const [confirmationMessage, setConfirmationMessage] = useState('')
   const [loadingText, setLoadingText] = useState("Getting things ready...")
+  const [error, setError] = useState<string | null>(null);
 
   const LOADING_DELAY = 7000; // 7 seconds
   const loadingMessages = [
@@ -149,6 +150,14 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
 const clientName = sessionData.client 
 ? `${sessionData.client.givenName} ${sessionData.client.familyName}`
 : sessionData.company?.name || "Unknown Client";
+const onePillarBizdev = '0bb94cb5-538b-4735-930d-947c3676f845';
+const onePillarOps = '1a4b452d-0de8-482a-a99b-53024ab70b05';
+const onePillarTalent = '4dc6ca4d-9f23-4602-8bfd-4d7a66b75109';
+const twoPillarsBizdevOps = '6dbbb103-c43f-456b-acf1-04d9aaa3475c';
+const twoPillarsBizdevTalent = '020dcf7f-4e0b-418f-b93b-69e041c92d3a';
+const twoPillarsTalentOps = '9250db95-6f40-43d3-bf39-6cec8f903936';
+const threePillars = 'be1a6856-3de9-42ca-99dd-bac00d8c80d4';
+const consultingServices = '6b5f3ef9-6fff-4861-9758-29b804f22167';
 
   const handleSelectPackage = (productId: string) => {
     setSelectedProduct(productId)
@@ -183,24 +192,112 @@ const clientName = sessionData.client
     setShowConfirmationModal(true)
   }
 
-  const handleConfirmation = () => {
-    setShowConfirmationModal(false)
-    setIsLoading(true)
-    let currentMessage = 0
-    setLoadingText(loadingMessages[currentMessage])
+  const handleConfirmation = async () => {
+    setShowConfirmationModal(false);
+    setIsLoading(true);
+    let currentMessage = 0;
+    setLoadingText(loadingMessages[currentMessage]);
     
-    const interval = setInterval(() => {
-      currentMessage++
-      if (currentMessage < loadingMessages.length) {
-        setLoadingText(loadingMessages[currentMessage])
+    // Determine the contract template ID based on the selected product and pillars
+    let contractTemplateId: string | null = null;
+  
+    // Assign the correct template ID based on the selection
+    if (selectedProduct === '1-pillar') {
+      if (selectedPillar === 'business-dev') {
+        contractTemplateId = onePillarBizdev;
+      } else if (selectedPillar === 'operations') {
+        contractTemplateId = onePillarOps;
+      } else if (selectedPillar === 'talent') {
+        contractTemplateId = onePillarTalent;
       }
-      if (currentMessage >= loadingMessages.length) {
-        clearInterval(interval)
-        setIsLoading(false)
-        window.open('https://app.firmos.ai/contracts?view=templates', '_blank')
+    } else if (selectedProduct === '2-pillars') {
+      if (selectedPillarCombo === 'business-dev-operations') {
+        contractTemplateId = twoPillarsBizdevOps;
+      } else if (selectedPillarCombo === 'business-dev-talent') {
+        contractTemplateId = twoPillarsBizdevTalent;
+      } else if (selectedPillarCombo === 'talent-operations') {
+        contractTemplateId = twoPillarsTalentOps;
       }
-    }, LOADING_DELAY / loadingMessages.length)
-  }
+    } else if (selectedProduct === '3-pillars') {
+      contractTemplateId = threePillars;
+    } else if (selectedProduct === 'consulting') {
+      contractTemplateId = consultingServices;
+    }
+  
+    // Check if we have a valid contractTemplateId
+    if (!contractTemplateId) {
+      setError("Unable to determine contract template");
+      setIsLoading(false);
+      return;
+    }
+  
+    const recipientId = '5e0c8a63-c6ca-420d-9418-4465257bafc3'; // Make sure this value is correct
+  
+    // Function to send the contract
+    const sendContract = async () => {
+      const url = '/api/sendContract';
+      const payload = {
+        recipientId: recipientId.trim(),
+        contractTemplateId: contractTemplateId.trim(),
+      };
+    
+      console.group('📤 Sending contract');
+      console.log('Payload:', payload);
+      console.groupEnd();
+    
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+    
+        const data = await response.json();
+        console.log('📥 API Response:', data);
+    
+        if (!response.ok) {
+          console.error('❌ Contract API error:', data);
+          throw new Error(data.error?.message || 'Unknown error');
+        }
+    
+        const contractId = data.id;
+        return `https://app.firmos.ai/contracts/submit?contractId=${contractId}`;
+      } catch (err) {
+        console.error('Error sending contract:', err);
+        throw err;
+      }
+    };
+    
+    
+    
+  
+    try {
+      console.time('Contract Creation Duration');
+      const contractUrl = await sendContract();
+      console.timeEnd('Contract Creation Duration');
+  
+      // Process loading messages
+      const interval = setInterval(() => {
+        currentMessage++;
+        if (currentMessage < loadingMessages.length) {
+          setLoadingText(loadingMessages[currentMessage]);
+        }
+        if (currentMessage >= loadingMessages.length) {
+          clearInterval(interval);
+          setIsLoading(false);
+          window.open(contractUrl, '_blank');
+        }
+      }, LOADING_DELAY / loadingMessages.length);
+    } catch (err) {
+      console.error('❌ Error during contract creation:', err);
+      setError(err instanceof Error ? err.message : 'An unknown error occurred');
+      setIsLoading(false);
+    }
+  };
+  
+  
 
   useEffect(() => {
     document.title = 'Product Selection'
@@ -501,8 +598,7 @@ const clientName = sessionData.client
                         You have selected the{' '}
                         <span className="font-semibold text-blue-600 dark:text-blue-400">
                           {sentence.split('the ')[1]?.split('. Would')[0] || sentence}
-                        </span>
-                        .
+                        </span>.
                       </>
                     ) : (
                       sentence + '.'
