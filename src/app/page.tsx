@@ -60,12 +60,12 @@ export default async function Page({
 }: {
   searchParams: SearchParams;
 }) {
-  if (!process.env.INVOICE_API_KEY) {
-    throw new Error('INVOICE_API_KEY is not defined in environment variables');
+  if (!process.env.COPILOT_API_KEY) {
+    throw new Error('COPILOT_API_KEY is not defined in environment variables');
   }
 
   const copilot = copilotApi({
-    apiKey: process.env.INVOICE_API_KEY,
+    apiKey: process.env.COPILOT_API_KEY,
     token: "token" in searchParams && typeof searchParams.token === "string"
       ? searchParams.token
       : undefined,
