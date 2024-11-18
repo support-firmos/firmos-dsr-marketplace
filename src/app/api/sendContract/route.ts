@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const COPILOT_API_KEY = process.env.INVOICE_API_KEY;
+const COPILOT_API_KEY = process.env.NEXT_PUBLIC_COPILOT_API_KEY;
 
 export async function POST(req: NextRequest) {
   try {

@@ -10,7 +10,7 @@ export async function getSession(searchParams: SearchParams) {
   // apiKey needs to be defined inside the function so we get the
   // error boundary page instead of a vercel error.
   const apiKey = need<string>(
-    process.env.COPILOT_API_KEY,
+    process.env.NEXT_PUBLIC_COPILOT_API_KEY,
     'COPILOT_API_KEY is required, guide available at: https://docs.copilot.com/docs/custom-apps-setting-up-your-first-app#step-2-register-your-app-and-get-an-api-key',
   );
 
