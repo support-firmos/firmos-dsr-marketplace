@@ -1,5 +1,6 @@
 'use client'
 
+import { copilotApi } from "copilot-node-sdk";
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Badge } from "@/components/ui/badge"
@@ -17,7 +18,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 
-// Add these new types
+// Update the SessionData type
 type SessionData = {
   client?: {
     id: string;
@@ -28,6 +29,7 @@ type SessionData = {
     name: string;
   };
 };
+
 
 export function BlockPage({ sessionData }: { sessionData: SessionData }) {
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null)
@@ -183,101 +185,61 @@ const consultingServices = '6b5f3ef9-6fff-4861-9758-29b804f22167';
     setSelectedPillarCombo(combo)
   }
 
-  const handlePillarConfirmation = () => {
-    setShowPillarModal(false)
-    if (selectedProduct === '1-pillar') {
-      setConfirmationMessage(`You have selected the ${pillars[selectedPillar as keyof typeof pillars].name} pillar. Would you like to proceed?`)
-    } else if (selectedProduct === '2-pillars') {
-      setConfirmationMessage(`You have selected the ${pillarCombos[selectedPillarCombo as keyof typeof pillarCombos].name} pillars. Would you like to proceed?`)
-    }
-    setShowConfirmationModal(true)
-  }
-
   const handleConfirmation = async () => {
     setShowConfirmationModal(false);
     setIsLoading(true);
     let currentMessage = 0;
     setLoadingText(loadingMessages[currentMessage]);
-    
-    // Determine the contract template ID based on the selected product and pillars
-    let contractTemplateId: string | null = null;
-  
-    // Assign the correct template ID based on the selection
-    if (selectedProduct === '1-pillar') {
-      if (selectedPillar === 'business-dev') {
-        contractTemplateId = onePillarBizdev;
-      } else if (selectedPillar === 'operations') {
-        contractTemplateId = onePillarOps;
-      } else if (selectedPillar === 'talent') {
-        contractTemplateId = onePillarTalent;
-      }
-    } else if (selectedProduct === '2-pillars') {
-      if (selectedPillarCombo === 'business-dev-operations') {
-        contractTemplateId = twoPillarsBizdevOps;
-      } else if (selectedPillarCombo === 'business-dev-talent') {
-        contractTemplateId = twoPillarsBizdevTalent;
-      } else if (selectedPillarCombo === 'talent-operations') {
-        contractTemplateId = twoPillarsTalentOps;
-      }
-    } else if (selectedProduct === '3-pillars') {
-      contractTemplateId = threePillars;
-    } else if (selectedProduct === 'consulting') {
-      contractTemplateId = consultingServices;
-    }
-  
-    // Check if we have a valid contractTemplateId
-    if (!contractTemplateId) {
-      setError("Unable to determine contract template");
-      setIsLoading(false);
-      return;
-    }
-  
-    const recipientId = sessionData.client?.id || "";
-  
-    // Function to send the contract
-    const sendContract = async () => {
-      const url = '/api/sendContract';
-      const payload = {
-        recipientId: recipientId.trim(),
-        contractTemplateId: contractTemplateId.trim(),
-      };
-    
-      console.group('📤 Sending contract');
-      console.log('Payload:', payload);
-      console.groupEnd();
-    
-      try {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-        });
-    
-        const data = await response.json();
-        console.log('📥 API Response:', data);
-    
-        if (!response.ok) {
-          console.error('❌ Contract API error:', data);
-          throw new Error(data.error?.message || 'Unknown error');
-        }
-    
-        const contractId = data.id;
-        return `https://app.firmos.ai/contracts/submit?contractId=${contractId}`;
-      } catch (err) {
-        console.error('Error sending contract:', err);
-        throw err;
-      }
-    };
-    
-    
-    
   
     try {
-      console.time('Contract Creation Duration');
-      const contractUrl = await sendContract();
-      console.timeEnd('Contract Creation Duration');
+      // Determine the contract template ID based on the selected product and pillars
+      let contractTemplateId: string | null = null;
+      
+      // Assign the correct template ID based on the selection
+      if (selectedProduct === '1-pillar') {
+        if (selectedPillar === 'business-dev') {
+          contractTemplateId = onePillarBizdev;
+        } else if (selectedPillar === 'operations') {
+          contractTemplateId = onePillarOps;
+        } else if (selectedPillar === 'talent') {
+          contractTemplateId = onePillarTalent;
+        }
+      } else if (selectedProduct === '2-pillars') {
+        if (selectedPillarCombo === 'business-dev-operations') {
+          contractTemplateId = twoPillarsBizdevOps;
+        } else if (selectedPillarCombo === 'business-dev-talent') {
+          contractTemplateId = twoPillarsBizdevTalent;
+        } else if (selectedPillarCombo === 'talent-operations') {
+          contractTemplateId = twoPillarsTalentOps;
+        }
+      } else if (selectedProduct === '3-pillars') {
+        contractTemplateId = threePillars;
+      } else if (selectedProduct === 'consulting') {
+        contractTemplateId = consultingServices;
+      }
+  
+      if (!contractTemplateId) {
+        throw new Error("Unable to determine contract template");
+      }
+  
+      // Make API call to our new endpoint
+      const response = await fetch('/api/contracts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contractTemplateId,
+          recipientId: sessionData.client?.id || "5e0c8a63-c6ca-420d-9418-4465257bafc3"
+        }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.details || 'Failed to create contract');
+      }
+  
+      const data = await response.json();
   
       // Process loading messages
       const interval = setInterval(() => {
@@ -288,9 +250,13 @@ const consultingServices = '6b5f3ef9-6fff-4861-9758-29b804f22167';
         if (currentMessage >= loadingMessages.length) {
           clearInterval(interval);
           setIsLoading(false);
-          window.open(contractUrl, '_blank');
+          // Open the contract URL in a new tab
+          if (data.contractUrl) {
+            window.open(data.contractUrl, '_blank');
+          }
         }
       }, LOADING_DELAY / loadingMessages.length);
+  
     } catch (err) {
       console.error('❌ Error during contract creation:', err);
       setError(err instanceof Error ? err.message : 'An unknown error occurred');
@@ -575,7 +541,7 @@ const consultingServices = '6b5f3ef9-6fff-4861-9758-29b804f22167';
             </div>
             <DialogFooter>
               <Button 
-                onClick={handlePillarConfirmation} 
+                onClick={handleConfirmation} 
                 disabled={(selectedProduct === '1-pillar' && !selectedPillar) || (selectedProduct === '2-pillars' && !selectedPillarCombo)}
                 className="w-full bg-blue-500 hover:bg-blue-600 text-white transition-colors"
               >

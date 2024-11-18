@@ -1,6 +1,7 @@
 import { BlockPage} from '@/components/src-app-page';
 import { TokenGate } from '@/components/TokenGate';
 import { getSession } from '@/utils/session';
+import { copilotApi } from "copilot-node-sdk";
 import Head from 'next/head';
 
 
@@ -54,7 +55,22 @@ async function Content({ searchParams }: { searchParams: SearchParams }) {
 }
 
 
-export default function Page({ searchParams }: { searchParams: SearchParams }) {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  if (!process.env.INVOICE_API_KEY) {
+    throw new Error('COPILOT_API_KEY is not defined in environment variables');
+  }
+
+  const copilot = copilotApi({
+    apiKey: process.env.INVOICE_API_KEY,
+    token: "token" in searchParams && typeof searchParams.token === "string"
+      ? searchParams.token
+      : undefined,
+  });
+  
   return (
     <TokenGate searchParams={searchParams}>
       <Content searchParams={searchParams} />
