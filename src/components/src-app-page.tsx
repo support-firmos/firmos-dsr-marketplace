@@ -235,40 +235,35 @@ const consultingServices = '6b5f3ef9-6fff-4861-9758-29b804f22167';
     const recipientId = sessionData.client?.id || "";
   
     // Function to send the contract
-    const COPILOT_API_KEY = process.env.NEXT_PUBLIC_COPILOT_API_KEY || '';
-
     const sendContract = async () => {
       const url = '/api/sendContract';
       const payload = {
         recipientId: recipientId.trim(),
         contractTemplateId: contractTemplateId.trim(),
       };
-
+    
       console.group('📤 Sending contract');
       console.log('Payload:', payload);
       console.groupEnd();
-
+    
       try {
         const response = await fetch(url, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-API-KEY': COPILOT_API_KEY,
+            'X-API-KEY': process.env.NEXT_PUBLIC_COPILOT_API_KEY,
           },
           body: JSON.stringify(payload),
         });
-
-        if (response.status === 401) {
-          throw new Error('Unauthorized - Check API Key');
-        }
-
+    
         const data = await response.json();
         console.log('📥 API Response:', data);
-
+    
         if (!response.ok) {
+          console.error('❌ Contract API error:', data);
           throw new Error(data.error?.message || 'Unknown error');
         }
-
+    
         const contractId = data.id;
         return `https://app.firmos.ai/contracts/submit?contractId=${contractId}`;
       } catch (err) {
