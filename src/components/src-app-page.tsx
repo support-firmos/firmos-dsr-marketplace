@@ -20,6 +20,7 @@ import { Label } from "@/components/ui/label"
 // Add these new types
 type SessionData = {
   client?: {
+    id: string;
     givenName: string;
     familyName: string;
   };
@@ -231,7 +232,7 @@ const consultingServices = '6b5f3ef9-6fff-4861-9758-29b804f22167';
       return;
     }
   
-    const recipientId = '5e0c8a63-c6ca-420d-9418-4465257bafc3'; // Make sure this value is correct
+    const recipientId = sessionData.client?.id || "";
   
     // Function to send the contract
     const sendContract = async () => {

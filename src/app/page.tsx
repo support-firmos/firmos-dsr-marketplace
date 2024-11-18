@@ -40,6 +40,7 @@ async function Content({ searchParams }: { searchParams: SearchParams }) {
 
       <BlockPage sessionData={{
         client: data.client ? {
+          id: data.client.id || '',
           givenName: data.client.givenName || '',
           familyName: data.client.familyName || '' 
         } : undefined,
