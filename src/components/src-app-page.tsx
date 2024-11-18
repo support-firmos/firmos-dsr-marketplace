@@ -246,13 +246,20 @@ const consultingServices = '6b5f3ef9-6fff-4861-9758-29b804f22167';
       console.log('Payload:', payload);
       console.groupEnd();
     
+      // Create headers object
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      };
+    
+      const apiKey = process.env.NEXT_PUBLIC_COPILOT_API_KEY;
+      if (apiKey) {
+        headers['X-API-KEY'] = apiKey; // Add the API key only if it exists
+      }
+    
       try {
         const response = await fetch(url, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-API-KEY': process.env.NEXT_PUBLIC_COPILOT_API_KEY,
-          },
+          headers,
           body: JSON.stringify(payload),
         });
     
@@ -271,6 +278,7 @@ const consultingServices = '6b5f3ef9-6fff-4861-9758-29b804f22167';
         throw err;
       }
     };
+    
     
     
     
