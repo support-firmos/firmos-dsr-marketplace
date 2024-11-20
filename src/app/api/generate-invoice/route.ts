@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getSession } from '@/utils/session'; // Import the helper function
 
-// Product mapping based on contract name
+// Product mapping for contract names
 const productMapping: { [key: string]: string } = {
   '1-Pillar Bizdev': 'FirmOS Growth Platform - Core Focus (1 Pillar) - $2,450',
   '1-Pillar Operations': 'FirmOS Growth Platform - Core Focus (1 Pillar) - $2,450',
@@ -13,14 +12,49 @@ const productMapping: { [key: string]: string } = {
   'Consulting Services': 'FirmOS Consulting Subscription - $750/month',
 };
 
+// Function to fetch client details from Copilot API
+async function getClientDetails(clientId: string): Promise<{ fullName: string }> {
+  const COPILOT_API_KEY = process.env.NEXT_PUBLIC_COPILOT_API_KEY;
+
+  if (!COPILOT_API_KEY) {
+    throw new Error('Copilot API key is not configured');
+  }
+
+  const url = `https://api.copilot.com/v1/clients/${clientId}`;
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${COPILOT_API_KEY}`,
+    },
+  };
+
+  const response = await fetch(url, options);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch client details: ${response.statusText}`);
+  }
+
+  const clientData = await response.json();
+  const fullName = `${clientData.givenName} ${clientData.familyName}`;
+
+  return { fullName };
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { data } = body;
+    const { data, recipientId } = body;
 
     if (!data?.name) {
       return NextResponse.json(
         { error: 'Missing required parameter: contract name (data.name)' },
+        { status: 400 }
+      );
+    }
+
+    if (!recipientId) {
+      return NextResponse.json(
+        { error: 'Missing required parameter: recipientId' },
         { status: 400 }
       );
     }
@@ -35,26 +69,8 @@ export async function POST(request: Request) {
       );
     }
 
-    // Retrieve session data from search params
-    const searchParams = new URL(request.url).searchParams;
-    const sessionData = await getSession(searchParams);
-
-    // Extract client name or company name from session data
-    let clientName: string | null = null;
-
-    if (sessionData.client) {
-      clientName = `${sessionData.client.givenName} ${sessionData.client.familyName}`;
-    } else if (sessionData.company) {
-      clientName = sessionData.company.name;
-    }
-
-    // If no client name is found, return an error
-    if (!clientName) {
-      return NextResponse.json(
-        { error: 'Client name could not be determined from session data' },
-        { status: 500 }
-      );
-    }
+    // Fetch client details from Copilot API
+    const { fullName: clientName } = await getClientDetails(recipientId);
 
     // Prepare the invoice generation API call
     const BASE_URL = 'https://firmos-copilot-autoinvoice-899783477192.us-central1.run.app/generate_invoice';
@@ -65,7 +81,7 @@ export async function POST(request: Request) {
     const response = await fetch(fullUrl, {
       method: 'POST',
       headers: {
-        'accept': 'application/json',
+        accept: 'application/json',
       },
     });
 
