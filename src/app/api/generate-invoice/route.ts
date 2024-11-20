@@ -1,58 +1,52 @@
 import { NextResponse } from 'next/server';
 
-// Product mapping for contract names
-const productMapping: { [key: string]: string } = {
-  '1-Pillar Bizdev': 'FirmOS Growth Platform - Core Focus (1 Pillar) - $2,450',
-  '1-Pillar Operations': 'FirmOS Growth Platform - Core Focus (1 Pillar) - $2,450',
-  '1-Pillar Talent': 'FirmOS Growth Platform - Core Focus (1 Pillar) - $2,450',
-  '2-Pillar Bizdev-Talent': 'FirmOS Business Accelerator (2 Pillars) - $3,450 (30% Savings)',
-  '2-Pillar Talent-Ops': 'FirmOS Business Accelerator (2 Pillars) - $3,450 (30% Savings)',
-  '2-Pillar Bizdev-Ops': 'FirmOS Business Accelerator (2 Pillars) - $3,450 (30% Savings)',
-  '3-Pillars': 'FirmOS Total Business Mastery (3 Pillars) - $4,450 (40% Savings)',
-  'Consulting Services': 'FirmOS Consulting Subscription - $750/month',
-};
+const BASE_URL = 'https://firmos-copilot-autoinvoice-899783477192.us-central1.run.app/generate_invoice';
+const TIMEOUT_MS = 120000; // Timeout set to 120 seconds
 
-// Function to fetch client details from Copilot API
+// Function to fetch client details
 async function getClientDetails(clientId: string): Promise<{ fullName: string }> {
-  const COPILOT_API_KEY = process.env.NEXT_PUBLIC_COPILOT_API_KEY;
+  const url = `https://api.copilot.com/v1/clients/${clientId}`;
 
-  if (!COPILOT_API_KEY) {
-    throw new Error('Copilot API key is not configured');
+  // Prepare headers
+  const headers: Record<string, string> = {
+    accept: 'application/json',
+  };
+
+  const apiKey = process.env.NEXT_PUBLIC_COPILOT_API_KEY;
+  if (apiKey) {
+    headers['X-API-KEY'] = apiKey; // Add the API key only if it exists
   }
 
-  const url = `https://api.copilot.com/v1/clients/${clientId}`;
   const options = {
     method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization: `Bearer ${COPILOT_API_KEY}`,
-    },
+    headers, // Use the dynamically built headers object
   };
 
   const response = await fetch(url, options);
   if (!response.ok) {
-    throw new Error(`Failed to fetch client details: ${response.statusText}`);
+    const errorDetails = await response.text();
+    throw new Error(`Failed to fetch client details: ${errorDetails}`);
   }
 
   const clientData = await response.json();
-  const fullName = `${clientData.givenName} ${clientData.familyName}`;
-
-  return { fullName };
+  return {
+    fullName: `${clientData.givenName} ${clientData.familyName}`,
+  };
 }
 
+// Main route handler
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { data, recipientId } = body;
+    const { data } = await request.json();
 
+    // Validate required fields
     if (!data?.name) {
       return NextResponse.json(
         { error: 'Missing required parameter: contract name (data.name)' },
         { status: 400 }
       );
     }
-
-    if (!recipientId) {
+    if (!data?.recipientId) {
       return NextResponse.json(
         { error: 'Missing required parameter: recipientId' },
         { status: 400 }
@@ -60,41 +54,64 @@ export async function POST(request: Request) {
     }
 
     const contractName = data.name;
-    const productName = productMapping[contractName];
+    const recipientId = data.recipientId;
 
+    // Fetch client details
+    const { fullName: clientName } = await getClientDetails(recipientId);
+    console.log('👤 Client name resolved:', clientName);
+
+    // Map contract name to product name
+    const productMapping: { [key: string]: string } = {
+      '1-Pillar Bizdev': '[TEST] Product',
+      '1-Pillar Operations': '[TEST] Product',
+      '1-Pillar Talent': '[TEST] Product',
+      '2-Pillar Bizdev-Talent': 'FirmOS Business Accelerator (2 Pillars) - $3,450 (30% Savings)',
+      '2-Pillar Talent-Ops': 'FirmOS Business Accelerator (2 Pillars) - $3,450 (30% Savings)',
+      '2-Pillar Bizdev-Ops': 'FirmOS Business Accelerator (2 Pillars) - $3,450 (30% Savings)',
+      '3-Pillars': 'FirmOS Total Business Mastery (3 Pillars) - $4,450 (40% Savings)',
+      'Consulting Services': 'FirmOS Consulting Subscription - $750/month',
+    };
+
+    const productName = productMapping[contractName];
     if (!productName) {
       return NextResponse.json(
-        { error: 'Invalid contract name, no matching product found' },
+        { error: `Unknown contract name: ${contractName}` },
         { status: 400 }
       );
     }
+    console.log('📦 Product name mapped:', productName);
 
-    // Fetch client details from Copilot API
-    const { fullName: clientName } = await getClientDetails(recipientId);
+    // Generate invoice
+    const fullUrl = `${BASE_URL}?client_name=${encodeURIComponent(clientName)}&product_name=${encodeURIComponent(
+      productName
+    )}`;
+    console.log('🔗 Invoice generation URL:', fullUrl);
 
-    // Prepare the invoice generation API call
-    const BASE_URL = 'https://firmos-copilot-autoinvoice-899783477192.us-central1.run.app/generate_invoice';
-    const fullUrl = `${BASE_URL}?client_name=${encodeURIComponent(clientName)}&product_name=${encodeURIComponent(productName)}`;
-
-    console.log('🔗 Requesting URL:', fullUrl);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
     const response = await fetch(fullUrl, {
       method: 'POST',
-      headers: {
-        accept: 'application/json',
-      },
+      headers: { accept: 'application/json' },
+      signal: controller.signal,
     });
 
+    clearTimeout(timeoutId);
+
     if (!response.ok) {
-      throw new Error(`Invoice generation failed: ${response.statusText}`);
+      const errorDetails = await response.text();
+      throw new Error(`Invoice generation failed: ${errorDetails}`);
     }
 
-    const invoiceData = await response.json();
-    console.log('📤 Invoice successfully generated:', invoiceData);
+    const invoiceResponse = await response.json();
+    console.log('📥 Invoice API Response:', invoiceResponse);
 
-    return NextResponse.json(invoiceData, { status: 200 });
+    // Return the invoice response
+    return NextResponse.json(invoiceResponse, { status: 200 });
   } catch (error) {
     console.error('❌ Error:', error);
+
+    // Return a detailed error response
     return NextResponse.json(
       {
         error: 'Failed to process the webhook',
