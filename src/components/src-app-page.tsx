@@ -151,6 +151,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
 const clientName = sessionData.client 
 ? `${sessionData.client.givenName} ${sessionData.client.familyName}`
 : sessionData.company?.name || "Unknown Client";
+
 const onePillarBizdev = '0bb94cb5-538b-4735-930d-947c3676f845';
 const onePillarOps = '1a4b452d-0de8-482a-a99b-53024ab70b05';
 const onePillarTalent = '4dc6ca4d-9f23-4602-8bfd-4d7a66b75109';
