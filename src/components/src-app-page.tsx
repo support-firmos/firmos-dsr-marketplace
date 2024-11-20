@@ -113,8 +113,8 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
     },
     {
       id: '3-pillars',
-      title: 'FirmOS Operations Mastery (3 Pillars)',
-      heading: 'FIRMOS OPERATIONS MASTERY',
+      title: 'FirmOS Total Business Mastery (3 Pillars)',
+      heading: 'FIRMOS TOTAL BUSINESS MASTERY',
       subtitle: 'Complete Solution',
       description: '(3 Pillars)',
       fullDescription: 'Full operational support across Business Development, Operations, and Talent management. FirmOS equips you with a complete solution to manage and scale your firm efficiently.',
