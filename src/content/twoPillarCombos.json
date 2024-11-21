@@ -1,0 +1,14 @@
+{
+  "business-dev-talent": {
+    "name": "Business Development + Talent",
+    "description": "Boost client acquisition while optimizing team performance."
+  },
+  "talent-operations": {
+    "name": "Talent + Operations",
+    "description": "Enhance team efficiency and streamline internal processes."
+  },
+  "business-dev-operations": {
+    "name": "Business Development + Operations",
+    "description": "Improve client acquisition and internal operational efficiency."
+  }
+}

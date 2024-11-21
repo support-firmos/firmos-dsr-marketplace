@@ -24,7 +24,8 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import products from '@/content/products.json';
-import pillars from '@/content/pillars.json';
+import onePillarChoices from '@/content/onePillarChoices.json';
+import twoPillarCombos from '@/content/twoPillarCombos.json';
 
 // Add these new types
 type SessionData = {
@@ -58,23 +59,6 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
     'Preparing your package...',
     'Almost there!',
   ];
-
-  const pillarCombos = {
-    'business-dev-talent': {
-      name: 'Business Development + Talent',
-      description:
-        'Boost client acquisition while optimizing team performance.',
-    },
-    'talent-operations': {
-      name: 'Talent + Operations',
-      description: 'Enhance team efficiency and streamline internal processes.',
-    },
-    'business-dev-operations': {
-      name: 'Business Development + Operations',
-      description:
-        'Improve client acquisition and internal operational efficiency.',
-    },
-  };
 
   // Construct the client name
   const clientName = sessionData.client
@@ -121,11 +105,11 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
     setShowPillarModal(false);
     if (selectedProduct === '1-pillar') {
       setConfirmationMessage(
-        `You have selected the ${pillars[selectedPillar as keyof typeof pillars].name} pillar. Would you like to proceed?`,
+        `You have selected the ${onePillarChoices[selectedPillar as keyof typeof onePillarChoices].name} pillar. Would you like to proceed?`,
       );
     } else if (selectedProduct === '2-pillars') {
       setConfirmationMessage(
-        `You have selected the ${pillarCombos[selectedPillarCombo as keyof typeof pillarCombos].name} pillars. Would you like to proceed?`,
+        `You have selected the ${twoPillarCombos[selectedPillarCombo as keyof typeof twoPillarCombos].name} pillars. Would you like to proceed?`,
       );
     }
     setShowConfirmationModal(true);
@@ -504,7 +488,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                   value={selectedPillar || ''}
                   onValueChange={handlePillarSelection}
                 >
-                  {Object.entries(pillars).map(([key, value]) => (
+                  {Object.entries(onePillarChoices).map(([key, value]) => (
                     <div
                       key={key}
                       className={`flex items-start space-x-2 p-3 rounded-md transition-colors
@@ -527,7 +511,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                   value={selectedPillarCombo || ''}
                   onValueChange={handlePillarComboSelection}
                 >
-                  {Object.entries(pillarCombos).map(([key, value]) => (
+                  {Object.entries(twoPillarCombos).map(([key, value]) => (
                     <div
                       key={key}
                       className={`flex items-start space-x-2 p-3 rounded-md transition-colors
