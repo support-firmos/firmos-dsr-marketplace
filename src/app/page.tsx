@@ -12,6 +12,20 @@ export const revalidate = 180;
 
 async function Content({ searchParams }: { searchParams: SearchParams }) {
   const data = await getSession(searchParams);
+  const client = data.client
+    ? {
+        id: data.client.id || '',
+        givenName: data.client.givenName || '',
+        familyName: data.client.familyName || '',
+      }
+    : undefined;
+  const company = data.company
+    ? {
+        name: data.company.name || '',
+      }
+    : undefined;
+  const displayName = data.client?.givenName || data.company?.name || 'Name';
+
   return (
     <main>
       <h1
@@ -21,27 +35,10 @@ async function Content({ searchParams }: { searchParams: SearchParams }) {
   "
       >
         Hello & Welcome,
-        <code className="ml-2">
-          {data.client?.givenName || data.company?.name || 'Name'}
-        </code>
+        <code className="ml-2">{displayName}</code>
       </h1>
 
-      <BlockPage
-        sessionData={{
-          client: data.client
-            ? {
-                id: data.client.id || '',
-                givenName: data.client.givenName || '',
-                familyName: data.client.familyName || '',
-              }
-            : undefined,
-          company: data.company
-            ? {
-                name: data.company.name || '', // Ensure name is a non-nullable string
-              }
-            : undefined,
-        }}
-      />
+      <BlockPage sessionData={{ client, company }} />
     </main>
   );
 }
