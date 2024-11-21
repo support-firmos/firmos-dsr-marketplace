@@ -26,8 +26,13 @@ import { Label } from '@/components/ui/label';
 import products from '@/content/products.json';
 import onePillarChoices from '@/content/onePillarChoices.json';
 import twoPillarCombos from '@/content/twoPillarCombos.json';
+import contractTemplateIds from '@/content/contractTemplateIds.json';
 
-// Add these new types
+type ContractTemplateIds = typeof contractTemplateIds;
+type OnePillarKeys = keyof ContractTemplateIds['1-pillar'];
+type TwoPillarKeys = keyof ContractTemplateIds['2-pillars'];
+type ProductKeys = keyof ContractTemplateIds;
+
 type SessionData = {
   client?: {
     id: string;
@@ -41,13 +46,11 @@ type SessionData = {
 
 export function BlockPage({ sessionData }: { sessionData: SessionData }) {
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
-  const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [showPillarModal, setShowPillarModal] = useState(false);
-  const [selectedPillar, setSelectedPillar] = useState<string | null>(null);
-  const [selectedPillarCombo, setSelectedPillarCombo] = useState<string | null>(
-    null,
-  );
+  const [selectedPillar, setSelectedPillar] = useState<string>('');
+  const [selectedPillarCombo, setSelectedPillarCombo] = useState<string>('');
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState('');
   const [loadingText, setLoadingText] = useState('Getting things ready...');
@@ -64,16 +67,6 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
   const clientName = sessionData.client
     ? `${sessionData.client.givenName} ${sessionData.client.familyName}`
     : sessionData.company?.name || 'Unknown Client';
-
-  const onePillarBizdev = '0bb94cb5-538b-4735-930d-947c3676f845';
-  const onePillarOps = '1a4b452d-0de8-482a-a99b-53024ab70b05';
-  const onePillarTalent = '4dc6ca4d-9f23-4602-8bfd-4d7a66b75109';
-  const twoPillarsBizdevOps = '6dbbb103-c43f-456b-acf1-04d9aaa3475c';
-  const twoPillarsBizdevTalent = '020dcf7f-4e0b-418f-b93b-69e041c92d3a';
-  const twoPillarsTalentOps = '9250db95-6f40-43d3-bf39-6cec8f903936';
-  const threePillars = 'be1a6856-3de9-42ca-99dd-bac00d8c80d4';
-  const consultingServices = '6b5f3ef9-6fff-4861-9758-29b804f22167';
-
   const handleSelectPackage = (productId: string) => {
     setSelectedProduct(productId);
     if (productId === '1-pillar' || productId === '2-pillars') {
@@ -124,27 +117,17 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
     // Determine the contract template ID based on the selected product and pillars
     let contractTemplateId: string | null = null;
 
-    // Assign the correct template ID based on the selection
     if (selectedProduct === '1-pillar') {
-      if (selectedPillar === 'business-dev') {
-        contractTemplateId = onePillarBizdev;
-      } else if (selectedPillar === 'operations') {
-        contractTemplateId = onePillarOps;
-      } else if (selectedPillar === 'talent') {
-        contractTemplateId = onePillarTalent;
-      }
+      const onePillar = contractTemplateIds[selectedProduct];
+      contractTemplateId = onePillar[selectedPillar as OnePillarKeys] || null;
     } else if (selectedProduct === '2-pillars') {
-      if (selectedPillarCombo === 'business-dev-operations') {
-        contractTemplateId = twoPillarsBizdevOps;
-      } else if (selectedPillarCombo === 'business-dev-talent') {
-        contractTemplateId = twoPillarsBizdevTalent;
-      } else if (selectedPillarCombo === 'talent-operations') {
-        contractTemplateId = twoPillarsTalentOps;
-      }
-    } else if (selectedProduct === '3-pillars') {
-      contractTemplateId = threePillars;
-    } else if (selectedProduct === 'consulting') {
-      contractTemplateId = consultingServices;
+      const twoPillars = contractTemplateIds[selectedProduct];
+      contractTemplateId =
+        twoPillars[selectedPillarCombo as TwoPillarKeys] || null;
+    } else {
+      contractTemplateId = contractTemplateIds[
+        selectedProduct as ProductKeys
+      ] as string | null;
     }
 
     // Check if we have a valid contractTemplateId
