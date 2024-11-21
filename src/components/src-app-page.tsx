@@ -24,6 +24,7 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import products from '@/content/products.json';
+import pillars from '@/content/pillars.json';
 
 // Add these new types
 type SessionData = {
@@ -57,21 +58,6 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
     'Preparing your package...',
     'Almost there!',
   ];
-
-  const pillars = {
-    'business-dev': {
-      name: 'Business Development',
-      description: 'Enhance lead generation and client acquisition strategies.',
-    },
-    operations: {
-      name: 'Operations',
-      description: 'Streamline internal processes and improve efficiency.',
-    },
-    talent: {
-      name: 'Talent',
-      description: 'Optimize talent management and team performance.',
-    },
-  };
 
   const pillarCombos = {
     'business-dev-talent': {
