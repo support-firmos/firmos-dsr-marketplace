@@ -23,6 +23,7 @@ import {
 } from '@/components/ui/dialog';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import products from '@/content/products.json';
 
 // Add these new types
 type SessionData = {
@@ -88,79 +89,6 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
         'Improve client acquisition and internal operational efficiency.',
     },
   };
-
-  const products = [
-    {
-      id: '1-pillar',
-      title: 'FirmOS Growth Platform - Core Focus (1 Pillar)',
-      heading: 'FIRMOS GROWTH PLATFORM',
-      subtitle: 'Core Focus',
-      description: '(1 Pillar)',
-      fullDescription:
-        "Focus on one core area of your firm's operations. Choose between Business Development, Operations, or Talent management.",
-      price: 2450,
-      savings: null,
-      features: [
-        "1 firm's core operation",
-        'Custom AI Workflow Automations',
-        'Dedicated Support',
-        'Basic Analytics',
-      ],
-    },
-    {
-      id: '2-pillars',
-      title: 'FirmOS Business Accelerator (2 Pillars)',
-      heading: 'FIRMOS BUSINESS ACCELERATOR',
-      subtitle: 'Dual Focus',
-      description: '(2 Pillars)',
-      fullDescription:
-        "Optimize two critical aspects of your firm's operations. Choose any combination of Business Development, Operations, and Talent management.",
-      price: 3450,
-      savings: 30,
-      features: [
-        "2 firm's core operations",
-        'Custom AI Workflow Automations',
-        'Dedicated Support',
-        'Advanced Analytics',
-      ],
-    },
-    {
-      id: '3-pillars',
-      title: 'FirmOS Total Business Mastery (3 Pillars)',
-      heading: 'FIRMOS TOTAL BUSINESS MASTERY',
-      subtitle: 'Complete Solution',
-      description: '(3 Pillars)',
-      fullDescription:
-        'Full operational support across Business Development, Operations, and Talent management. FirmOS equips you with a complete solution to manage and scale your firm efficiently.',
-      price: 4450,
-      savings: 40,
-      features: [
-        "Complete firm's core operations",
-        'Custom AI Workflow Automations',
-        'Dedicated Support',
-        'Advanced Analytics',
-        'AI-Driven Insights and Recommendations',
-      ],
-    },
-    {
-      id: 'consulting',
-      title: 'FirmOS Consulting Subscription',
-      heading: 'FIRMOS CONSULTING',
-      subtitle: 'BI-WEEKLY STRATEGY',
-      description: 'SESSIONS',
-      fullDescription:
-        'Designed for firms needing structured support, this plan offers two 60-minute sessions monthly with tailored advice, templates, and actionable steps to improve operations, optimize strategies, or enhance team performance.',
-      price: 750,
-      isMonthly: true,
-      savings: null,
-      features: [
-        'Structured Operational Guidance',
-        'Actionable Financial Strategy Support',
-        'Bi-weekly 60-minute Sessions',
-        'Tailored Advice and Templates',
-      ],
-    },
-  ];
 
   // Construct the client name
   const clientName = sessionData.client
