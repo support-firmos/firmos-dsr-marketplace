@@ -11,33 +11,10 @@ import { copilotApi } from 'copilot-node-sdk';
 export const revalidate = 180;
 
 async function Content({ searchParams }: { searchParams: SearchParams }) {
-  const data = await getSession(searchParams);
-  const client = data.client
-    ? {
-        id: data.client.id || '',
-        givenName: data.client.givenName || '',
-        familyName: data.client.familyName || '',
-      }
-    : undefined;
-  const company = data.company
-    ? {
-        name: data.company.name || '',
-      }
-    : undefined;
-  const displayName = data.client?.givenName || data.company?.name || 'Name';
+  const { client, company } = await getSession(searchParams);
 
   return (
     <main>
-      <h1
-        className="
-    bg-[#14151A] text-white p-2.5 px-5 rounded-md text-lg font-sans 
-    shadow-md fixed top-5 left-5 z-[9999] w-auto
-  "
-      >
-        Hello & Welcome,
-        <code className="ml-2">{displayName}</code>
-      </h1>
-
       <BlockPage sessionData={{ client, company }} />
     </main>
   );

@@ -34,14 +34,39 @@ type TwoPillarKeys = keyof ContractTemplateIds['2-pillars'];
 type ProductKeys = keyof ContractTemplateIds;
 
 type SessionData = {
-  client?: {
-    id: string;
-    givenName: string;
-    familyName: string;
-  };
-  company?: {
-    name: string;
-  };
+  client?:
+    | {
+        id?: string;
+        object?: string;
+        createdAt?: string;
+        givenName?: string;
+        familyName?: string;
+        email?: string;
+        companyId?: string;
+        status?: string;
+        fallbackColor?: string;
+        inviteUrl?: string;
+        avatarImageUrl?: string;
+        firstLoginDate?: string;
+        lastLoginDate?: string;
+        customFields?: {
+          phoneNumber?: string;
+          tags?: Array<string>;
+        };
+        creationMethod?: string;
+      }
+    | undefined;
+  company?:
+    | {
+        id?: string;
+        object?: string;
+        createdAt?: string;
+        name?: string;
+        fallbackColor?: string;
+        iconImageUrl?: string;
+        isPlaceholder?: boolean;
+      }
+    | undefined;
 };
 
 export function BlockPage({ sessionData }: { sessionData: SessionData }) {
@@ -55,6 +80,9 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
   const [confirmationMessage, setConfirmationMessage] = useState('');
   const [loadingText, setLoadingText] = useState('Getting things ready...');
   const [error, setError] = useState<string | null>(null);
+
+  const displayName =
+    sessionData.client?.givenName || sessionData.company?.name || 'Guest';
 
   const LOADING_DELAY = 7000; // 7 seconds
   const loadingMessages = [
@@ -215,18 +243,17 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#121212] p-6 relative">
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-950/40 via-black/60 to-blue-950/40 pointer-events-none" />
-
+    <div className="relative min-h-screen p-6 bg-background">
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-accent/20 via-background to-accent/20" />
       <AnimatePresence>
         {isLoading && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-background bg-opacity-70"
           >
-            <div className="text-white text-center relative w-80 h-80">
+            <div className="relative text-center text-foreground w-80 h-80">
               <motion.div
                 animate={{
                   rotate: 360,
@@ -236,7 +263,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                   repeat: Infinity,
                   ease: 'linear',
                 }}
-                className="absolute inset-0 border-4 border-blue-500 rounded-full"
+                className="absolute inset-0 border-4 rounded-full border-primary"
               />
 
               <motion.div
@@ -248,7 +275,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                   repeat: Infinity,
                   ease: 'easeInOut',
                 }}
-                className="absolute inset-4 border-4 border-white rounded-full"
+                className="absolute border-4 rounded-full inset-4 border-foreground"
               />
 
               <div className="absolute inset-0 flex items-center justify-center">
@@ -262,7 +289,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                     repeat: Infinity,
                     ease: 'easeInOut',
                   }}
-                  className="w-24 h-6 bg-white rounded-sm"
+                  className="w-24 h-6 rounded-sm bg-foreground"
                 />
                 <motion.div
                   animate={{
@@ -274,7 +301,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                     repeat: Infinity,
                     ease: 'easeInOut',
                   }}
-                  className="absolute w-24 h-6 bg-black rounded-sm border-2 border-white"
+                  className="absolute w-24 h-6 border-2 rounded-sm bg-background border-foreground"
                 />
                 <motion.div
                   animate={{
@@ -286,12 +313,12 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                     repeat: Infinity,
                     ease: 'easeInOut',
                   }}
-                  className="w-24 h-6 bg-white rounded-sm"
+                  className="w-24 h-6 rounded-sm bg-foreground"
                 />
               </div>
 
               <motion.div
-                className="absolute -bottom-24 left-1/2 transform -translate-x-1/2 w-full"
+                className="absolute w-full transform -translate-x-1/2 -bottom-24 left-1/2"
                 animate={{
                   opacity: [0.5, 1, 0.5],
                 }}
@@ -301,7 +328,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                   ease: 'easeInOut',
                 }}
               >
-                <p className="text-2xl font-bold whitespace-nowrap bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
+                <p className="text-2xl font-bold text-transparent whitespace-nowrap bg-gradient-to-r from-primary to-accent bg-clip-text">
                   {loadingText}
                 </p>
               </motion.div>
@@ -309,19 +336,27 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <div className="relative z-10 max-w-6xl mx-auto">
-        <header className="mb-16 text-center pt-28">
+      <h1
+        className="
+    bg-muted text-foreground p-2.5 px-5 rounded-md text-lg font-sans 
+    shadow-md fixed top-5 left-5 z-[9999] w-auto
+  "
+      >
+        Hello & Welcome,
+        <code className="ml-2">{displayName}</code>
+      </h1>
+      <div className="relative z-10 max-w-8xl mx-auto">
+        <header className="mb-8 text-center pt-12">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="bg-gradient-to-r from-blue-950/90 via-black/95 to-blue-950/90 p-8 rounded-lg shadow-lg mb-8"
+            className="max-w-3xl p-8 mx-auto mb-8 border-2 rounded-lg shadow-lg bg-secondary border-border"
           >
-            <h1 className="text-4xl font-bold text-white mb-4">
+            <h1 className="mb-4 text-4xl font-bold text-foreground">
               Strategic FirmOS Solutions
             </h1>
-            <p className="text-gray-300 max-w-2xl mx-auto">
+            <p className="mx-auto text-secondary-foreground text-balance">
               Elevate your accounting practice with our meticulously crafted
               suite of professional tools. Select the optimal FirmOS package to
               revolutionize your firm&apos;s efficiency, client engagement, and
@@ -332,11 +367,11 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
             initial={{ width: 0 }}
             animate={{ width: '100%' }}
             transition={{ duration: 1.5, ease: 'easeInOut' }}
-            className="h-1 bg-gradient-to-r from-blue-950 via-white to-blue-950 rounded-full mx-auto"
+            className="h-1 mx-auto rounded-full bg-gradient-to-r from-background via-primary to-background"
           />
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           {products.map((product) => (
             <motion.div
               key={product.id}
@@ -347,49 +382,49 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
               onHoverEnd={() => setHoveredProduct(null)}
             >
               {product.savings && (
-                <Badge className="absolute -top-3 right-4 z-10 bg-red-500 text-white px-3 py-1 rounded-full">
+                <Badge className="absolute -top-3 right-4 z-10 bg-red-500 text-foreground px-3 py-1 rounded-full">
                   {product.savings}% SAVINGS
                 </Badge>
               )}
               <Card
                 className={`
-                  relative h-full bg-black border-gray-800 overflow-hidden
+                  relative h-full bg-card border-border overflow-hidden
                   transition-all duration-300 ease-in-out flex flex-col cursor-pointer
-                  ${selectedProduct === product.id ? 'ring-4 ring-blue-500 shadow-xl shadow-blue-500/50' : ''}
-                  ${hoveredProduct === product.id ? 'border-blue-500 border-2' : ''}
+                  ${selectedProduct === product.id ? 'ring-4 ring-primary shadow-xl shadow-secondary' : ''}
+                  ${hoveredProduct === product.id ? 'border-primary border-2' : ''}
                 `}
                 onClick={() => handleSelectPackage(product.id)}
               >
                 <CardHeader className="relative">
-                  <CardTitle className="text-2xl font-bold text-white mb-2">
+                  <CardTitle className="mb-2 text-2xl font-bold text-foreground">
                     {product.heading}
                   </CardTitle>
                   <CardDescription>
-                    <div className="text-blue-400 font-medium">
+                    <div className="font-medium text-blue-400">
                       {product.subtitle}
                     </div>
                     <div className="text-gray-400">{product.description}</div>
                   </CardDescription>
                   {selectedProduct === product.id && (
-                    <div className="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded-full text-sm font-bold">
+                    <div className="absolute px-2 py-1 text-sm font-bold text-white bg-blue-500 rounded-full top-2 right-2">
                       Selected
                     </div>
                   )}
                 </CardHeader>
 
                 <CardContent className="flex-1">
-                  <div className="text-3xl font-bold text-white mb-6">
+                  <div className="mb-6 text-3xl font-bold text-white">
                     ${product.price.toLocaleString()}
                     {product.isMonthly && (
                       <span className="text-lg text-gray-400">/month</span>
                     )}
                   </div>
 
-                  <div className="space-y-2 mb-6">
+                  <div className="mb-6 space-y-2">
                     {product.features.map((feature, index) => (
                       <div
                         key={index}
-                        className="flex items-start text-gray-300 text-sm"
+                        className="flex items-start text-sm text-gray-300"
                       >
                         <Check className="mr-2 h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
                         <span>{feature}</span>
@@ -428,7 +463,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                         className="w-full"
                       >
                         <Button
-                          className="w-full bg-blue-500 hover:bg-blue-600 text-white transition-colors"
+                          className="w-full text-white transition-colors bg-primary hover:bg-primary/90"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleSelectPackage(product.id);
@@ -445,8 +480,8 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
           ))}
         </div>
 
-        <footer className="mt-12 text-center text-gray-500 text-sm">
-          Visit <span className="text-blue-400">www.firmos.ai</span> for more
+        <footer className="mt-12 text-sm text-center text-muted-foreground">
+          Visit <span className="text-primary">www.firmos.ai</span> for more
           information
           <br />
           Custom AI Workflow Automations for Accounting Firms
@@ -479,7 +514,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                     >
                       <RadioGroupItem value={key} id={key} className="mt-1" />
                       <div>
-                        <Label htmlFor={key} className="font-medium text-lg">
+                        <Label htmlFor={key} className="text-lg font-medium">
                           {value.name}
                         </Label>
                         <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -502,7 +537,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                     >
                       <RadioGroupItem value={key} id={key} className="mt-1" />
                       <div>
-                        <Label htmlFor={key} className="font-medium text-lg">
+                        <Label htmlFor={key} className="text-lg font-medium">
                           {value.name}
                         </Label>
                         <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -521,7 +556,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                   (selectedProduct === '1-pillar' && !selectedPillar) ||
                   (selectedProduct === '2-pillars' && !selectedPillarCombo)
                 }
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white transition-colors"
+                className="w-full text-white transition-colors bg-blue-500 hover:bg-blue-600"
               >
                 Proceed with{' '}
                 {selectedProduct === '1-pillar'
@@ -542,7 +577,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                 Confirm Your Selection
               </DialogTitle>
             </DialogHeader>
-            <DialogDescription className="text-gray-600 dark:text-gray-400 py-4">
+            <DialogDescription className="py-4 text-gray-600 dark:text-gray-400">
               {confirmationMessage.includes('. ') ? (
                 confirmationMessage.split('. ').map((sentence, index) => (
                   <p key={index}>
@@ -571,7 +606,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
             <DialogFooter>
               <Button
                 onClick={handleConfirmation}
-                className="w-full bg-green-500 hover:bg-green-600 text-white transition-colors"
+                className="w-full text-white transition-colors bg-green-500 hover:bg-green-600"
               >
                 Confirm and Proceed
               </Button>
