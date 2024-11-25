@@ -80,6 +80,8 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
   const [confirmationMessage, setConfirmationMessage] = useState('');
   const [loadingText, setLoadingText] = useState('Getting things ready...');
   const [error, setError] = useState<string | null>(null);
+  const [showFinalModal, setShowFinalModal] = useState(false);
+  const [contractUrl, setContractUrl] = useState<string | null>(null);
 
   const displayName =
     sessionData.client?.givenName || sessionData.company?.name || 'Guest';
@@ -95,6 +97,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
   const clientName = sessionData.client
     ? `${sessionData.client.givenName} ${sessionData.client.familyName}`
     : sessionData.company?.name || 'Unknown Client';
+
   const handleSelectPackage = (productId: string) => {
     setSelectedProduct(productId);
     if (productId === '1-pillar' || productId === '2-pillars') {
@@ -145,6 +148,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
     // Determine the contract template ID based on the selected product and pillars
     let contractTemplateId: string | null = null;
 
+    // Assign the correct template ID based on the selection
     if (selectedProduct === '1-pillar') {
       const onePillar = contractTemplateIds[selectedProduct];
       contractTemplateId = onePillar[selectedPillar as OnePillarKeys] || null;
@@ -167,7 +171,6 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
 
     const recipientId = sessionData.client?.id || '';
 
-    // Function to send the contract
     const sendContract = async () => {
       const url = '/api/sendContract';
       const payload = {
@@ -205,9 +208,18 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
         }
 
         const contractId = data.id;
-        return `https://app.firmos.ai/contracts/submit?contractId=${contractId}`;
+        const contractUrl = `https://app.firmos.ai/contracts/submit?contractId=${contractId}`;
+        setContractUrl(contractUrl); // Save the contract URL to the state for use in the modal
+
+        setShowFinalModal(true); // Show the modal after successfully creating the contract
+        setIsLoading(false); // Turn off the loading state
+        return contractUrl; // Return the URL if needed elsewhere
       } catch (err) {
         console.error('Error sending contract:', err);
+        setError(
+          err instanceof Error ? err.message : 'An unknown error occurred',
+        );
+        setIsLoading(false); // Ensure loading is turned off on error
         throw err;
       }
     };
@@ -610,6 +622,33 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
               >
                 Confirm and Proceed
               </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={showFinalModal} onOpenChange={setShowFinalModal}>
+          <DialogContent className="sm:max-w-[425px] bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-bold">
+                Contract Ready
+              </DialogTitle>
+            </DialogHeader>
+            <DialogDescription className="text-gray-600 dark:text-gray-400 py-4">
+              Your contract for purchasing our product is ready for signing.
+            </DialogDescription>
+            <DialogFooter>
+              {contractUrl ? (
+                <a
+                  href={contractUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-blue-500 hover:bg-blue-600 text-white transition-colors py-2 px-4 text-center rounded-lg inline-block"
+                >
+                  Go to Contract
+                </a>
+              ) : (
+                <p className="text-gray-400">Loading contract link...</p>
+              )}
             </DialogFooter>
           </DialogContent>
         </Dialog>
