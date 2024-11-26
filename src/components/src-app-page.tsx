@@ -647,7 +647,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                   href={contractUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full bg-blue-500 hover:bg-blue-600 text-white transition-colors py-2 px-4 text-center rounded-lg inline-block"
+                  className="w-full bg-primary hover:bg-primary/900 text-white transition-colors py-2 px-4 text-center rounded-lg inline-block"
                 >
                   Go to Contract
                 </a>
