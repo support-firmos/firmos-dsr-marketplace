@@ -156,6 +156,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
       const twoPillars = contractTemplateIds[selectedProduct];
       contractTemplateId =
         twoPillars[selectedPillarCombo as TwoPillarKeys] || null;
+      console.log(contractTemplateId);
     } else {
       contractTemplateId = contractTemplateIds[
         selectedProduct as ProductKeys
