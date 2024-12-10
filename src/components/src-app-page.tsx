@@ -409,7 +409,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                 onClick={() => handleSelectPackage(product.id)}
               >
                 <CardHeader className="relative">
-                  <CardTitle className="mb-2 text-2xl font-bold text-foreground">
+                  <CardTitle className="mb-2 text-2xl font-bold text-foreground h-[100%] sm:h-[100%] md:h-[50px] lg:h-[80px] xl:h-[60px]">
                     {product.heading}
                   </CardTitle>
                   <CardDescription>
