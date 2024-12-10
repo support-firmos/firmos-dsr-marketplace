@@ -5,9 +5,9 @@
     "talent": "4dc6ca4d-9f23-4602-8bfd-4d7a66b75109"
   },
   "2-pillars": {
-    "bizdevOps": "6dbbb103-c43f-456b-acf1-04d9aaa3475c",
-    "bizdevTalent": "020dcf7f-4e0b-418f-b93b-69e041c92d3a",
-    "talentOps": "9250db95-6f40-43d3-bf39-6cec8f903936"
+    "business-dev-talent": "020dcf7f-4e0b-418f-b93b-69e041c92d3a",
+    "talent-operations": "9250db95-6f40-43d3-bf39-6cec8f903936",
+    "business-dev-operations": "6dbbb103-c43f-456b-acf1-04d9aaa3475c"
   },
   "3-pillars": "be1a6856-3de9-42ca-99dd-bac00d8c80d4",
   "consulting": "6b5f3ef9-6fff-4861-9758-29b804f22167"

@@ -156,6 +156,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
       const twoPillars = contractTemplateIds[selectedProduct];
       contractTemplateId =
         twoPillars[selectedPillarCombo as TwoPillarKeys] || null;
+      console.log(contractTemplateId);
     } else {
       contractTemplateId = contractTemplateIds[
         selectedProduct as ProductKeys
@@ -357,7 +358,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
         Hello & Welcome,
         <code className="ml-2">{displayName}</code>
       </h1>
-      <div className="relative z-10 max-w-8xl mx-auto">
+      <div className="relative z-10 max-w-7xl mx-auto">
         <header className="mb-8 text-center pt-12">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -415,20 +416,19 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                     <div className="font-medium text-blue-400">
                       {product.subtitle}
                     </div>
-                    <div className="text-gray-400">{product.description}</div>
-                  </CardDescription>
-                  {selectedProduct === product.id && (
-                    <div className="absolute px-2 py-1 text-sm font-bold text-white bg-blue-500 rounded-full top-2 right-2">
-                      Selected
+                    <div className="text-muted-foreground">
+                      {product.description}
                     </div>
-                  )}
+                  </CardDescription>
                 </CardHeader>
 
                 <CardContent className="flex-1">
-                  <div className="mb-6 text-3xl font-bold text-white">
+                  <div className="mb-6 text-3xl font-bold text-foreground">
                     ${product.price.toLocaleString()}
                     {product.isMonthly && (
-                      <span className="text-lg text-gray-400">/month</span>
+                      <span className="text-lg text-muted-foreground">
+                        /month
+                      </span>
                     )}
                   </div>
 
@@ -436,7 +436,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                     {product.features.map((feature, index) => (
                       <div
                         key={index}
-                        className="flex items-start text-sm text-gray-300"
+                        className="flex items-start text-sm text-secondary-foreground"
                       >
                         <Check className="mr-2 h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
                         <span>{feature}</span>
@@ -448,7 +448,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                     {(hoveredProduct === product.id ||
                       selectedProduct === product.id) && (
                       <motion.div
-                        className="mb-6 text-sm text-gray-400"
+                        className="mb-6 text-sm text-muted-foreground"
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
@@ -475,7 +475,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                         className="w-full"
                       >
                         <Button
-                          className="w-full text-white transition-colors bg-primary hover:bg-primary/90"
+                          className="w-full text-foreground transition-colors bg-primary hover:bg-primary/90"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleSelectPackage(product.id);
@@ -500,13 +500,13 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
         </footer>
 
         <Dialog open={showPillarModal} onOpenChange={setShowPillarModal}>
-          <DialogContent className="sm:max-w-[425px] bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+          <DialogContent className="sm:max-w-[425px] bg-foreground text-background">
             <DialogHeader>
               <DialogTitle className="text-2xl font-bold">
                 Select Your{' '}
                 {selectedProduct === '1-pillar' ? 'Pillar' : 'Pillars'}
               </DialogTitle>
-              <DialogDescription className="text-gray-600 dark:text-gray-400">
+              <DialogDescription className="text-muted-foreground">
                 {selectedProduct === '1-pillar'
                   ? 'Choose one pillar for your FirmOS Growth Platform.'
                   : 'Choose a pillar combination for your FirmOS Business Accelerator.'}
@@ -522,14 +522,17 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                     <div
                       key={key}
                       className={`flex items-start space-x-2 p-3 rounded-md transition-colors
-                        ${selectedPillar === key ? 'bg-blue-100 dark:bg-blue-900' : 'hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                        ${selectedPillar === key ? 'bg-foreground' : 'hover:bg-secondary-foreground'}`}
                     >
                       <RadioGroupItem value={key} id={key} className="mt-1" />
                       <div>
-                        <Label htmlFor={key} className="text-lg font-medium">
+                        <Label
+                          htmlFor={key}
+                          className="text-lg font-medium cursor-pointer"
+                        >
                           {value.name}
                         </Label>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <p className="text-sm text-muted-foreground">
                           {value.description}
                         </p>
                       </div>
@@ -545,14 +548,17 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                     <div
                       key={key}
                       className={`flex items-start space-x-2 p-3 rounded-md transition-colors
-                        ${selectedPillarCombo === key ? 'bg-blue-100 dark:bg-blue-900' : 'hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                        ${selectedPillarCombo === key ? 'bg-foreground' : 'hover:bg-secondary-foreground'}`}
                     >
                       <RadioGroupItem value={key} id={key} className="mt-1" />
                       <div>
-                        <Label htmlFor={key} className="text-lg font-medium">
+                        <Label
+                          htmlFor={key}
+                          className="cursor-pointer text-lg font-medium"
+                        >
                           {value.name}
                         </Label>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <p className="text-sm text-muted-foreground">
                           {value.description}
                         </p>
                       </div>
@@ -568,7 +574,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                   (selectedProduct === '1-pillar' && !selectedPillar) ||
                   (selectedProduct === '2-pillars' && !selectedPillarCombo)
                 }
-                className="w-full text-white transition-colors bg-blue-500 hover:bg-blue-600"
+                className="w-full text-foreground transition-colors bg-primary hover:bg-primary/90"
               >
                 Proceed with{' '}
                 {selectedProduct === '1-pillar'
@@ -583,20 +589,20 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
           open={showConfirmationModal}
           onOpenChange={setShowConfirmationModal}
         >
-          <DialogContent className="sm:max-w-[425px] bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+          <DialogContent className="sm:max-w-[425px] bg-foreground text-background">
             <DialogHeader>
               <DialogTitle className="text-2xl font-bold">
                 Confirm Your Selection
               </DialogTitle>
             </DialogHeader>
-            <DialogDescription className="py-4 text-gray-600 dark:text-gray-400">
+            <DialogDescription className="py-4 text-muted-foreground">
               {confirmationMessage.includes('. ') ? (
                 confirmationMessage.split('. ').map((sentence, index) => (
                   <p key={index}>
                     {index === 0 ? (
                       <>
                         You have selected the{' '}
-                        <span className="font-semibold text-blue-600 dark:text-blue-400">
+                        <span className="font-semibold text-blue-500">
                           {sentence.split('the ')[1]?.split('. Would')[0] ||
                             sentence}
                         </span>
@@ -609,7 +615,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                 ))
               ) : (
                 <p>
-                  <span className="font-semibold text-blue-600 dark:text-blue-400">
+                  <span className="font-semibold text-blue-500">
                     {confirmationMessage}
                   </span>
                 </p>
@@ -618,7 +624,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
             <DialogFooter>
               <Button
                 onClick={handleConfirmation}
-                className="w-full text-white transition-colors bg-green-500 hover:bg-green-600"
+                className="w-full text-foreground transition-colors bg-primary hover:bg-primary/90"
               >
                 Confirm and Proceed
               </Button>
@@ -642,7 +648,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                   href={contractUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full bg-blue-500 hover:bg-blue-600 text-white transition-colors py-2 px-4 text-center rounded-lg inline-block"
+                  className="w-full bg-primary hover:bg-primary/900 text-white transition-colors py-2 px-4 text-center rounded-lg inline-block"
                 >
                   Go to Contract
                 </a>
