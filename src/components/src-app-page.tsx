@@ -82,6 +82,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
   const [error, setError] = useState<string | null>(null);
   const [showFinalModal, setShowFinalModal] = useState(false);
   const [contractUrl, setContractUrl] = useState<string | null>(null);
+  const [selectedBillingCycle, setSelectedBillingCycle] = useState('quarterly');
 
   const displayName =
     sessionData.client?.givenName || sessionData.company?.name || 'Guest';
@@ -384,6 +385,21 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
           />
         </header>
 
+        <RadioGroup
+          defaultValue="quarterly"
+          className="flex justify-center space-x-4 pb-8"
+          onValueChange={(value) => setSelectedBillingCycle(value)}
+        >
+          <div className="flex items-center space-x-3">
+            <RadioGroupItem value="quarterly" id="quarterly" />
+            <Label htmlFor="quarterly">Quarterly</Label>
+          </div>
+          <div className="flex items-center space-x-3">
+            <RadioGroupItem value="monthly" id="monthly" />
+            <Label htmlFor="monthly">Monthly</Label>
+          </div>
+        </RadioGroup>
+
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           {products.map((product) => (
             <motion.div
@@ -394,11 +410,12 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
               onHoverStart={() => setHoveredProduct(product.id)}
               onHoverEnd={() => setHoveredProduct(null)}
             >
-              {product.savings && (
-                <Badge className="absolute -top-3 right-4 z-10 bg-red-500 text-foreground px-3 py-1 rounded-full">
-                  {product.savings}% SAVINGS
-                </Badge>
-              )}
+              {selectedBillingCycle == 'quarterly' &&
+                product.quarterly_savings && (
+                  <Badge className="absolute -top-3 right-4 z-10 bg-red-500 text-foreground px-3 py-1 rounded-full">
+                    {product.quarterly_savings}% SAVINGS
+                  </Badge>
+                )}
               <Card
                 className={`
                   relative h-full bg-card border-border overflow-hidden
@@ -423,13 +440,19 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                 </CardHeader>
 
                 <CardContent className="flex-1">
-                  <div className="mb-6 text-3xl font-bold text-foreground">
-                    ${product.price.toLocaleString()}
-                    {product.isMonthly && (
-                      <span className="text-lg text-muted-foreground">
-                        /month
-                      </span>
-                    )}
+                  <div className="mb-6 text-5xl font-bold text-foreground">
+                    $
+                    {selectedBillingCycle == 'monthly' &&
+                      product.price_monthly.toLocaleString()}
+                    {selectedBillingCycle == 'quarterly' &&
+                      product.price_quarterly.toLocaleString()}
+                    {selectedBillingCycle == 'quarterly' &&
+                      product.quarterly_savings && <sup>*</sup>}
+                    <div className="text-sm mt-2 font-medium text-muted-foreground">
+                      per month
+                      {selectedBillingCycle == 'quarterly' &&
+                        ' (billed quarterly)'}
+                    </div>
                   </div>
 
                   <div className="mb-6 space-y-2">
