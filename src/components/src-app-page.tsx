@@ -446,7 +446,8 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                       product.price_monthly.toLocaleString()}
                     {selectedBillingCycle == 'quarterly' &&
                       product.price_quarterly.toLocaleString()}
-                    {selectedBillingCycle == 'quarterly' && <sup>*</sup>}
+                    {selectedBillingCycle == 'quarterly' &&
+                      product.quarterly_savings && <sup>*</sup>}
                     <div className="text-sm mt-2 font-medium text-muted-foreground">
                       per month
                       {selectedBillingCycle == 'quarterly' &&
