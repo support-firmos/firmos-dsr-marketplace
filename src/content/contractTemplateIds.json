@@ -1,27 +1,27 @@
 {
   "quarterly": {
-    "3-pillars": "17b2ec9c-e72a-4ab3-a29d-6d6d7832438e",
+    "3-pillars": "da2633c3-0499-4273-b6c9-fcd6493fb9c7",
     "2-pillars": {
-      "talent-ops": "081bbbe8-343b-4e7d-a318-2258e0640782",
-      "ops-bizdev": "30519a04-e153-4d5b-bdbe-25650c6cea33",
-      "bizdev-talent": "65d98f8c-8f97-4bf2-ae79-eccd6f6e2f38"
+      "talent-ops": "9804461d-3e65-4098-baba-d1467d3522bb",
+      "ops-bizdev": "e920204e-7e8f-4294-8969-5f7d63b39c39",
+      "bizdev-talent": "19009f48-02e6-4cbe-91f3-ea8883672240"
     },
     "1-pillar": {
-      "talent": "09bbd17d-48e9-488a-8e53-721c420d9bfe",
-      "ops": "9cda253d-4ae6-403a-95f4-f68abd990809",
-      "bizdev": "5df95e12-3f38-4271-8e1a-9fad8d6d9785"
+      "talent": "7033ceee-735c-4a10-a2d0-f76adf030df5",
+      "ops": "e6153fc0-a2bb-4ab0-aeca-0dbe8db0efb5",
+      "bizdev": "b3e4647b-6324-4236-b857-4cf2fefa535d"
     }
   },
   "monthly": {
-    "3-pillars": "7b764377-de5f-4606-bb27-11d7f36fd0f0",
+    "3-pillars": "8db425ef-9ca9-4a9f-a446-e9a75bcb8a11",
     "2-pillars": {
-      "talent-ops": "d3966a0b-dbe8-441d-8082-1123bd9c91e3",
-      "ops-bizdev": "34ce3308-7e4f-490a-b9a2-d6dfb42b0557",
-      "bizdev-talent": "44454407-7b12-447f-85d1-e0faa4e7ee8a"
+      "talent-ops": "54f47bff-f028-4694-af87-73d235f7ee40",
+      "ops-bizdev": "1f33bf41-0143-4c35-8a3f-462e87349f16",
+      "bizdev-talent": "722b2ac5-7b32-4d27-a88b-2b3fec733c43"
     },
     "1-pillar": {
-      "talent": "ce4f0585-c729-4204-a899-186562bbc3b9",
-      "ops": "a53667f8-992a-40a0-a457-6eebd2e381cc",
+      "talent": "360cafb8-1455-4af3-9521-a9a732d6a464",
+      "ops": "58d5be95-ce4b-4007-998c-8b17e2063cea",
       "bizdev": "d454dc90-a613-4846-92f2-92b293529004"
     }
   },
