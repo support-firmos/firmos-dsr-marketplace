@@ -416,6 +416,14 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                     {product.quarterly_savings}% SAVINGS
                   </Badge>
                 )}
+                
+                {selectedBillingCycle == 'monthly' &&
+                product.monthly_savings && (
+                  <Badge className="absolute -top-3 right-4 z-10 bg-red-500 text-foreground px-3 py-1 rounded-full">
+                    {product.monthly_savings}% SAVINGS
+                  </Badge>
+                )}
+              
               <Card
                 className={`
                   relative h-full bg-card overflow-hidden
