@@ -8,7 +8,8 @@
     "fullDescription": "Full operational support across Business Development, Operations, and Talent management. FirmOS equips you with a complete solution to manage and scale your firm efficiently.",
     "price_monthly": 4450,
     "price_quarterly": 3950,
-    "quarterly_savings": 40,
+    "quarterly_savings": 50,
+    "monthly_savings": 40,
     "features": [
       "Complete firm's core operations",
       "Custom AI Workflow Automations",
@@ -26,7 +27,8 @@
     "fullDescription": "Optimize two critical aspects of your firm's operations. Choose any combination of Business Development, Operations, and Talent management.",
     "price_monthly": 3450,
     "price_quarterly": 3095,
-    "quarterly_savings": 10,
+    "quarterly_savings": 40,
+    "monthly_savings": 30,
     "features": [
       "2 firm's core operations",
       "Custom AI Workflow Automations",
