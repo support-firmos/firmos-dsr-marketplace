@@ -417,14 +417,14 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
             >
               {selectedBillingCycle == 'quarterly' &&
                 product.quarterly_savings && (
-                  <Badge className="absolute -top-3 right-4 z-10 bg-red-500 text-foreground px-3 py-1 rounded-full">
+                  <Badge className="absolute -top-3 right-4 z-10 bg-primary text-foreground px-3 py-1 rounded-full">
                     {product.quarterly_savings}% SAVINGS
                   </Badge>
                 )}
                 
                 {selectedBillingCycle == 'monthly' &&
                 product.monthly_savings && (
-                  <Badge className="absolute -top-3 right-4 z-10 bg-red-500 text-foreground px-3 py-1 rounded-full">
+                  <Badge className="absolute -top-3 right-4 z-10 bg-primary text-foreground px-3 py-1 rounded-full">
                     {product.monthly_savings}% SAVINGS
                   </Badge>
                 )}
