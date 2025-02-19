@@ -28,11 +28,6 @@ import onePillarChoices from '@/content/onePillarChoices.json';
 import twoPillarCombos from '@/content/twoPillarCombos.json';
 import contractTemplateIds from '@/content/contractTemplateIds.json';
 
-type ContractTemplateIds = typeof contractTemplateIds;
-type OnePillarKeys = keyof ContractTemplateIds['1-pillar'];
-type TwoPillarKeys = keyof ContractTemplateIds['2-pillars'];
-type ProductKeys = keyof ContractTemplateIds;
-
 type SessionData = {
   client?:
     | {
@@ -146,23 +141,34 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
     let currentMessage = 0;
     setLoadingText(loadingMessages[currentMessage]);
 
-    // Determine the contract template ID based on the selected product and pillars
-    let contractTemplateId: string | null = null;
+    // Determine the contract template ID based on the selected product and billing cycle
+    const getContractTemplateId = () => {
+      if (selectedProduct === 'consulting') {
+        return contractTemplateIds.consulting;
+      }
 
-    // Assign the correct template ID based on the selection
-    if (selectedProduct === '1-pillar') {
-      const onePillar = contractTemplateIds[selectedProduct];
-      contractTemplateId = onePillar[selectedPillar as OnePillarKeys] || null;
-    } else if (selectedProduct === '2-pillars') {
-      const twoPillars = contractTemplateIds[selectedProduct];
-      contractTemplateId =
-        twoPillars[selectedPillarCombo as TwoPillarKeys] || null;
-      console.log(contractTemplateId);
-    } else {
-      contractTemplateId = contractTemplateIds[
-        selectedProduct as ProductKeys
-      ] as string | null;
-    }
+      const cycle =
+        selectedBillingCycle === 'quarterly' ? 'quarterly' : 'monthly';
+      const productTemplates = contractTemplateIds[cycle];
+
+      switch (selectedProduct) {
+        case '3-pillars':
+          return productTemplates['3-pillars'];
+        case '2-pillars':
+          return productTemplates['2-pillars'][
+            selectedPillarCombo as keyof typeof twoPillarCombos
+          ];
+        case '1-pillar':
+          return productTemplates['1-pillar'][
+            selectedPillar as keyof typeof onePillarChoices
+          ];
+        default:
+          return '';
+      }
+    };
+
+    const contractTemplateId = getContractTemplateId();
+    console.log('Contract Template ID:', contractTemplateId);
 
     // Check if we have a valid contractTemplateId
     if (!contractTemplateId) {

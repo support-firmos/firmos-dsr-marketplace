@@ -1,9 +1,9 @@
 {
-  "business-dev": {
+  "bizdev": {
     "name": "Business Development",
     "description": "Enhance lead generation and client acquisition strategies."
   },
-  "operations": {
+  "ops": {
     "name": "Operations",
     "description": "Streamline internal processes and improve efficiency."
   },
