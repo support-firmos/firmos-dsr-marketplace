@@ -168,7 +168,6 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
     };
 
     const contractTemplateId = getContractTemplateId();
-    console.log('Contract Template ID:', contractTemplateId);
 
     // Check if we have a valid contractTemplateId
     if (!contractTemplateId) {
