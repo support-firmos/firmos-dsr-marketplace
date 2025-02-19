@@ -365,12 +365,12 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="max-w-3xl p-8 mx-auto mb-8 border-2 rounded-lg shadow-lg bg-secondary border-border"
+            className="p-8 mx-auto mb-8 rounded-lg shadow-lg"
           >
-            <h1 className="mb-4 text-4xl font-bold text-foreground">
+            <h1 className="mb-4 text-[4rem] font-medium text-foreground">
               Strategic FirmOS Solutions
             </h1>
-            <p className="mx-auto text-secondary-foreground text-balance">
+            <p className="mx-auto text-accent-foreground text-balance">
               Elevate your accounting practice with our meticulously crafted
               suite of professional tools. Select the optimal FirmOS package to
               revolutionize your firm&apos;s efficiency, client engagement, and
@@ -418,19 +418,19 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                 )}
               <Card
                 className={`
-                  relative h-full bg-card border-border overflow-hidden
+                  relative h-full bg-card overflow-hidden
                   transition-all duration-300 ease-in-out flex flex-col cursor-pointer
-                  ${selectedProduct === product.id ? 'ring-4 ring-primary shadow-xl shadow-secondary' : ''}
-                  ${hoveredProduct === product.id ? 'border-primary border-2' : ''}
+                  ${selectedProduct === product.id ? 'ring-4 ring-border shadow-xl shadow-secondary/50' : ''}
+                  ${hoveredProduct === product.id ? 'border-border border-2' : ''}
                 `}
                 onClick={() => handleSelectPackage(product.id)}
               >
                 <CardHeader className="relative">
-                  <CardTitle className="mb-2 text-2xl font-bold text-foreground h-[100%] sm:h-[100%] md:h-[50px] lg:h-[80px] xl:h-[60px]">
+                  <CardTitle className="mb-2 text-2xl font-medium text-foreground h-[100%] sm:h-[100%] md:h-[50px] lg:h-[80px] xl:h-[60px]">
                     {product.heading}
                   </CardTitle>
                   <CardDescription>
-                    <div className="font-medium text-blue-400">
+                    <div className="font-medium text-highlight">
                       {product.subtitle}
                     </div>
                     <div className="text-muted-foreground">
@@ -440,7 +440,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                 </CardHeader>
 
                 <CardContent className="flex-1">
-                  <div className="mb-6 text-5xl font-bold text-foreground">
+                  <div className="mb-6 text-5xl font-semibold text-foreground">
                     $
                     {selectedBillingCycle == 'monthly' &&
                       product.price_monthly.toLocaleString()}
@@ -459,7 +459,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                     {product.features.map((feature, index) => (
                       <div
                         key={index}
-                        className="flex items-start text-sm text-secondary-foreground"
+                        className="flex items-start text-sm text-accent-foreground"
                       >
                         <Check className="mr-2 h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
                         <span>{feature}</span>
@@ -478,7 +478,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                         transition={{ duration: 0.2 }}
                       >
                         <Info
-                          className="inline-block mr-2 text-blue-400"
+                          className="inline-block mr-2 text-highlight"
                           size={16}
                         />
                         {product.fullDescription}
@@ -498,7 +498,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                         className="w-full"
                       >
                         <Button
-                          className="w-full text-foreground transition-colors bg-primary hover:bg-primary/90"
+                          className="w-full text-secondary-foreground transition-colors bg-secondary/90 hover:bg-secondary"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleSelectPackage(product.id);
@@ -523,7 +523,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
         </footer>
 
         <Dialog open={showPillarModal} onOpenChange={setShowPillarModal}>
-          <DialogContent className="sm:max-w-[425px] bg-foreground text-background">
+          <DialogContent className="sm:max-w-[425px] bg-card text-card-foreground">
             <DialogHeader>
               <DialogTitle className="text-2xl font-bold">
                 Select Your{' '}
@@ -545,7 +545,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                     <div
                       key={key}
                       className={`flex items-start space-x-2 p-3 rounded-md transition-colors
-                        ${selectedPillar === key ? 'bg-foreground' : 'hover:bg-secondary-foreground'}`}
+                        ${selectedPillar === key ? 'bg-secondary/5' : 'hover:bg-secondary/5'}`}
                     >
                       <RadioGroupItem value={key} id={key} className="mt-1" />
                       <div>
@@ -571,7 +571,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                     <div
                       key={key}
                       className={`flex items-start space-x-2 p-3 rounded-md transition-colors
-                        ${selectedPillarCombo === key ? 'bg-foreground' : 'hover:bg-secondary-foreground'}`}
+                        ${selectedPillarCombo === key ? 'bg-secondary/5' : 'hover:bg-secondary/5'}`}
                     >
                       <RadioGroupItem value={key} id={key} className="mt-1" />
                       <div>
@@ -597,7 +597,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                   (selectedProduct === '1-pillar' && !selectedPillar) ||
                   (selectedProduct === '2-pillars' && !selectedPillarCombo)
                 }
-                className="w-full text-foreground transition-colors bg-primary hover:bg-primary/90"
+                className="w-full text-secondary-foreground transition-colors bg-secondary/90 hover:bg-secondary"
               >
                 Proceed with{' '}
                 {selectedProduct === '1-pillar'
@@ -612,7 +612,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
           open={showConfirmationModal}
           onOpenChange={setShowConfirmationModal}
         >
-          <DialogContent className="sm:max-w-[425px] bg-foreground text-background">
+          <DialogContent className="sm:max-w-[425px] bg-card text-card">
             <DialogHeader>
               <DialogTitle className="text-2xl font-bold">
                 Confirm Your Selection
@@ -625,7 +625,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                     {index === 0 ? (
                       <>
                         You have selected the{' '}
-                        <span className="font-semibold text-blue-500">
+                        <span className="font-semibold text-highlight">
                           {sentence.split('the ')[1]?.split('. Would')[0] ||
                             sentence}
                         </span>
@@ -638,7 +638,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                 ))
               ) : (
                 <p>
-                  <span className="font-semibold text-blue-500">
+                  <span className="font-semibold text-highlight">
                     {confirmationMessage}
                   </span>
                 </p>
@@ -647,7 +647,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
             <DialogFooter>
               <Button
                 onClick={handleConfirmation}
-                className="w-full text-foreground transition-colors bg-primary hover:bg-primary/90"
+                className="w-full text-secondary-foreground transition-colors bg-secondary/90 hover:bg-secondary"
               >
                 Confirm and Proceed
               </Button>

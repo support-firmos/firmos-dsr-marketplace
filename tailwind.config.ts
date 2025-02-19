@@ -10,6 +10,7 @@ const config: Config = {
   theme: {
   	extend: {
   		backgroundImage: {
+				'card': 'linear-gradient(165deg, hsl(var(--card-primary)), hsl(var(--card-secondary)))',
   			'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
   			'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))'
   		},
@@ -22,9 +23,12 @@ const config: Config = {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
-  				DEFAULT: 'hsl(var(--card))',
-  				foreground: 'hsl(var(--card-foreground))'
-  			},
+					foreground: 'hsl(var(--card-foreground))',
+				},
+				header: {
+					DEFAULT: 'hsl(var(--card-background))',
+					foreground: 'hsl(var(--card-foreground))',
+				},
   			popover: {
   				DEFAULT: 'hsl(var(--popover))',
   				foreground: 'hsl(var(--popover-foreground))'
@@ -52,6 +56,7 @@ const config: Config = {
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',
+				highlight: 'hsl(var(--highlight))',
   			chart: {
   				'1': 'hsl(var(--chart-1))',
   				'2': 'hsl(var(--chart-2))',

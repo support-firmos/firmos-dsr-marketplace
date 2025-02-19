@@ -21,32 +21,35 @@
     --background: 0 0% 0%;
     --foreground: 0 0% 100%;
 
-    --primary: 15.72 98.94% 62.94%;
+    --primary: 134 61.4% 40.6%;
     --primary-foreground: 16.67 56.25% 6.27%;
 
-    --card: 15 25% 6.27%;
-    --card-foreground: 15 100% 94.51%;
+    --card-primary: 0 0% 7.8%;
+    --card-secondary: 0 2% 2%;
+    --card-background: 0 0% 5%;
+    --card-foreground: 0 0% 74.9%;
 
     --popover: 0 0% 0%;
-    --popover-foreground: 15 100% 94.51%;
+    --popover-foreground: 0 0% 74.9%;
 
-    --secondary: 16.36 58.93% 21.96%;
-    --secondary-foreground: 15 100% 94.51%;
+    --secondary: 0 0% 90.2%;
+    --secondary-foreground: 0 0% 0%;
 
     --muted: 0 0% 9.8%;
     --muted-foreground: 0 0% 50.2%;
 
-    --accent: 16.36 58.93% 21.96%;
-    --accent-foreground: 15 100% 94.51%;
+    --accent: 134 61.4% 40.6% /32;
+    --accent-foreground: 0 0% 74.9%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 15.79 59.38% 12.55%;
+    --border: 0 0% 100% / 0.15;
     --input: 15.79 17.43% 21.37%;
-    --ring: 15.72 98.94% 62.94%;
+    --ring: 134 61.4% 40.6%;
+    --highlight: 142 59.9% 45.4%;
 
-    --chart-1: 15.72 98.94% 62.94%;
+    --chart-1: 134 61.4% 40.6%;
     --chart-2: 15.85 67.09% 53.53%;
     --chart-3: 15.37 57.89% 40.98%;
     --chart-4: 15.73 58.19% 34.71%;
@@ -54,11 +57,12 @@
 
     --radius: 0.5rem;
   }
+
   .dark {
     --background: 0 0% 100%;
     --foreground: 16.67 56.25% 6.27%;
 
-    --primary: 15.72 98.94% 62.94%;
+    --primary: 134 61.4% 40.6%;
     --primary-foreground: 16.67 56.25% 6.27%;
 
     --card: 13.33 100% 98.24%;
@@ -67,7 +71,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 16.67 56.25% 6.27%;
 
-    --secondary: 15 100% 94.51%;
+    --secondary: 0 0% 90.2%;
     --secondary-foreground: 0 0% 0%;
 
     --muted: 15.79 100% 96.27%;
@@ -79,11 +83,12 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 15.79 100% 92.55%;
+    --border: 134 61.4% 40.6%;
     --input: 15.65 26.44% 82.94%;
-    --ring: 15.72 98.94% 62.94%;
+    --ring: 134 61.4% 40.6%;
+    --highlight: 142 59.9% 45.4%;
 
-    --chart-1: 15.72 98.94% 62.94%;
+    --chart-1: 134 61.4% 40.6%;
     --chart-2: 15.85 98.76% 68.43%;
     --chart-3: 15.87 98.37% 75.88%;
     --chart-4: 15.88 98.08% 79.61%;
@@ -97,6 +102,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
