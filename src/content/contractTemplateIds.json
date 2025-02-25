@@ -1,14 +1,29 @@
 {
-  "1-pillar": {
-    "business-dev": "0bb94cb5-538b-4735-930d-947c3676f845",
-    "operations": "1a4b452d-0de8-482a-a99b-53024ab70b05",
-    "talent": "4dc6ca4d-9f23-4602-8bfd-4d7a66b75109"
+  "quarterly": {
+    "3-pillars": "da2633c3-0499-4273-b6c9-fcd6493fb9c7",
+    "2-pillars": {
+      "talent-ops": "9804461d-3e65-4098-baba-d1467d3522bb",
+      "ops-bizdev": "e920204e-7e8f-4294-8969-5f7d63b39c39",
+      "bizdev-talent": "19009f48-02e6-4cbe-91f3-ea8883672240"
+    },
+    "1-pillar": {
+      "talent": "7033ceee-735c-4a10-a2d0-f76adf030df5",
+      "ops": "e6153fc0-a2bb-4ab0-aeca-0dbe8db0efb5",
+      "bizdev": "b3e4647b-6324-4236-b857-4cf2fefa535d"
+    }
   },
-  "2-pillars": {
-    "business-dev-talent": "020dcf7f-4e0b-418f-b93b-69e041c92d3a",
-    "talent-operations": "9250db95-6f40-43d3-bf39-6cec8f903936",
-    "business-dev-operations": "6dbbb103-c43f-456b-acf1-04d9aaa3475c"
+  "monthly": {
+    "3-pillars": "8db425ef-9ca9-4a9f-a446-e9a75bcb8a11",
+    "2-pillars": {
+      "talent-ops": "54f47bff-f028-4694-af87-73d235f7ee40",
+      "ops-bizdev": "1f33bf41-0143-4c35-8a3f-462e87349f16",
+      "bizdev-talent": "722b2ac5-7b32-4d27-a88b-2b3fec733c43"
+    },
+    "1-pillar": {
+      "talent": "360cafb8-1455-4af3-9521-a9a732d6a464",
+      "ops": "58d5be95-ce4b-4007-998c-8b17e2063cea",
+      "bizdev": "d454dc90-a613-4846-92f2-92b293529004"
+    }
   },
-  "3-pillars": "be1a6856-3de9-42ca-99dd-bac00d8c80d4",
   "consulting": "6b5f3ef9-6fff-4861-9758-29b804f22167"
 }

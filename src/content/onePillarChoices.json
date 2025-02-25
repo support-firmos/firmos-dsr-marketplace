@@ -1,9 +1,9 @@
 {
-  "business-dev": {
+  "bizdev": {
     "name": "Business Development",
     "description": "Generate high-quality leads with AI automation."
   },
-  "operations": {
+  "ops": {
     "name": "Operations",
     "description": "Improve efficiency with automated workflows."
   },
