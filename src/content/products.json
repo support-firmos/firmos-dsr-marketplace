@@ -24,33 +24,35 @@
     "heading": "2 PILLARS",
     "subtitle": "Dual Focus",
     "description": "FirmOS Business Accelerator",
-    "fullDescription": "Optimize two critical aspects of your firm's operations. Choose any combination of Business Development, Operations, and Talent management.",
+    "fullDescription": "Adapt and scale with AI-driven automation. Choose two pillars and seamlessly transition between them as your firm's priorities shift.",
     "price_monthly": 3450,
     "price_quarterly": 3095,
     "quarterly_savings": 40,
     "monthly_savings": 30,
     "features": [
-      "2 firm's core operations",
-      "Custom AI Workflow Automations",
-      "Dedicated Support",
-      "Advanced Analytics"
+      "Optimize two core business areas",
+      "Custom AI Automations",
+      "Bi-weekly Strategy Calls",
+      "Real-Time Performance Insights",
+      "Flexible Pillar Adjustments",
+      "Greater Impact, Faster Results"
     ]
   },
   {
     "id": "1-pillar",
-    "title": "FirmOS Growth Platform - Core Focus (1 Pillar)",
+    "title": "FirmOS Growth Plan - Core Focus (1 Pillar)",
     "heading": "1 PILLAR",
     "subtitle": "Core Focus",
-    "description": "FirmOS Growth Platform",
-    "fullDescription": "Focus on one core area of your firm's operations. Choose between Business Development, Operations, or Talent management.",
+    "description": "FirmOS Growth Plan",
+    "fullDescription": "Tackle your top priority with AI automation and expert strategy. Choose client acquisition, hiring, or operations, and get the tools to scale efficiently.",
     "price_monthly": 2450,
     "price_quarterly": 2195,
     "quarterly_savings": 10,
     "features": [
-      "1 firm's core operation",
-      "Custom AI Workflow Automations",
-      "Dedicated Support",
-      "Basic Analytics"
+      "Optimize One Core Area",
+      "Custom AI Automations",
+      "Bi-weekly Strategy Calls",
+      "Real-Time Performance Insights"
     ]
   },
   {
@@ -59,15 +61,15 @@
     "heading": "FIRMOS CONSULTING",
     "subtitle": "SESSIONS",
     "description": "Bi-Weekly Strategy",
-    "fullDescription": "Designed for firms needing structured support, this plan offers two 60-minute sessions monthly with tailored advice, templates, and actionable steps to improve operations, optimize strategies, or enhance team performance.",
+    "fullDescription": "Get hands-on consulting tailored to your firm's needs with bi-weekly strategy sessions, AI guidance, process templates, and step-by-step execution plans.",
     "price_monthly": 750,
     "price_quarterly": 675,
     "quarterly_savings": 10,
     "features": [
-      "Structured Operational Guidance",
-      "Actionable Financial Strategy Support",
-      "Bi-weekly 60-minute Sessions",
-      "Tailored Advice and Templates"
+      "Bi-Weekly 60-Minute Sessions",
+      "Proven Operational Frameworks",
+      "Custom Playbooks & Templates",
+      "Tailored Insights and Support"
     ]
   }
 ]

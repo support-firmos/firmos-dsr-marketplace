@@ -143,9 +143,9 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
 
     // Determine the contract template ID based on the selected product and billing cycle
     const getContractTemplateId = () => {
-      if (selectedProduct === 'consulting') {
-        return contractTemplateIds.consulting;
-      }
+      // if (selectedProduct === 'consulting') {
+      //   return contractTemplateIds.consulting;
+      // }
 
       const cycle =
         selectedBillingCycle === 'quarterly' ? 'quarterly' : 'monthly';
@@ -162,6 +162,8 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
           return productTemplates['1-pillar'][
             selectedPillar as keyof typeof onePillarChoices
           ];
+        case 'consulting':
+          return productTemplates['consulting'];
         default:
           return '';
       }
@@ -372,14 +374,11 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
             transition={{ duration: 0.8, ease: 'easeOut' }}
             className="p-8 mx-auto mb-8 rounded-lg shadow-lg"
           >
-            <h1 className="mb-4 text-[4rem] font-medium text-foreground">
-              Strategic FirmOS Solutions
+            <h1 className="mb-4 text-5xl font-medium text-foreground">
+            Plans designed for every stage of growth
             </h1>
             <p className="mx-auto text-accent-foreground text-balance">
-              Elevate your accounting practice with our meticulously crafted
-              suite of professional tools. Select the optimal FirmOS package to
-              revolutionize your firm&apos;s efficiency, client engagement, and
-              growth potential.
+            Choose from our flexible pricing packages and save more when bundling multiple pillars.
             </p>
           </motion.div>
           <motion.div
@@ -534,7 +533,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
           <DialogContent className="sm:max-w-[425px] bg-card text-card-foreground">
             <DialogHeader>
               <DialogTitle className="text-2xl font-bold">
-                Select Your{' '}
+                Select{' '}
                 {selectedProduct === '1-pillar' ? 'Pillar' : 'Pillars'}
               </DialogTitle>
               <DialogDescription className="text-muted-foreground">
@@ -607,10 +606,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                 }
                 className="w-full text-secondary-foreground transition-colors bg-secondary/90 hover:bg-secondary"
               >
-                Proceed with{' '}
-                {selectedProduct === '1-pillar'
-                  ? 'this pillar'
-                  : 'these pillars'}
+                Activate Plan
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -623,7 +619,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
           <DialogContent className="sm:max-w-[425px] bg-card text-card">
             <DialogHeader>
               <DialogTitle className="text-2xl font-bold">
-                Confirm Your Selection
+                Confirm Selection
               </DialogTitle>
             </DialogHeader>
             <DialogDescription className="py-4 text-muted-foreground">
@@ -657,7 +653,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                 onClick={handleConfirmation}
                 className="w-full text-secondary-foreground transition-colors bg-secondary/90 hover:bg-secondary"
               >
-                Confirm and Proceed
+                Activate Plan
               </Button>
             </DialogFooter>
           </DialogContent>
