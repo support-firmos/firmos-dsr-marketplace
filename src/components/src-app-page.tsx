@@ -417,14 +417,14 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
             >
               {selectedBillingCycle == 'quarterly' &&
                 product.quarterly_savings && (
-                  <Badge className="absolute -top-3 right-4 z-10 bg-primary text-foreground px-3 py-1 rounded-full">
+                  <Badge className="absolute -top-3 right-4 z-10 bg-red-500 text-foreground px-3 py-1 rounded-full">
                     {product.quarterly_savings}% SAVINGS
                   </Badge>
                 )}
                 
                 {selectedBillingCycle == 'monthly' &&
                 product.monthly_savings && (
-                  <Badge className="absolute -top-3 right-4 z-10 bg-primary text-foreground px-3 py-1 rounded-full">
+                  <Badge className="absolute -top-3 right-4 z-10 bg-red-500 text-foreground px-3 py-1 rounded-full">
                     {product.monthly_savings}% SAVINGS
                   </Badge>
                 )}
@@ -438,22 +438,20 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                 `}
                 onClick={() => handleSelectPackage(product.id)}
               >
-                <CardHeader className="relative">
-                  <CardTitle className="mb-2 text-2xl font-medium text-foreground h-[100%] sm:h-[100%] md:h-[50px] lg:h-[80px] xl:h-[60px]">
+                <CardHeader className="relative text-center">
+                  <CardTitle className="mb-2 text-3xl font-medium flex justify-center items-center text-foreground h-[100%] sm:h-[100%] md:h-[30px] lg:h-[50px] xl:h-[60px]">
                     {product.heading}
                   </CardTitle>
+
                   <CardDescription>
-                    <div className="font-medium text-highlight">
-                      {product.subtitle}
-                    </div>
-                    <div className="text-muted-foreground">
+                  <div className="text-accent-foreground text-xl flex justify-center items-center h-[100%] sm:h-[100%] md:h-[30px] lg:h-[50px] xl:h-[50px]">
                       {product.description}
                     </div>
                   </CardDescription>
                 </CardHeader>
 
                 <CardContent className="flex-1">
-                  <div className="mb-6 text-5xl font-semibold text-foreground">
+                  <div className="mb-6 text-[2.5rem] font-semibold text-foreground">
                     $
                     {selectedBillingCycle == 'monthly' &&
                       product.price_monthly.toLocaleString()}
@@ -529,10 +527,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
         </div>
 
         <footer className="mt-12 text-sm text-center text-muted-foreground">
-          Visit <span className="text-primary">www.firmos.ai</span> for more
-          information
-          <br />
-          Custom AI Workflow Automations for Accounting Firms
+        Copyright © 2025 FirmOS Inc. All rights reserved
         </footer>
 
         <Dialog open={showPillarModal} onOpenChange={setShowPillarModal}>
