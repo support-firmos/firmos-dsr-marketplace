@@ -143,9 +143,9 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
 
     // Determine the contract template ID based on the selected product and billing cycle
     const getContractTemplateId = () => {
-      if (selectedProduct === 'consulting') {
-        return contractTemplateIds.consulting;
-      }
+      // if (selectedProduct === 'consulting') {
+      //   return contractTemplateIds.consulting;
+      // }
 
       const cycle =
         selectedBillingCycle === 'quarterly' ? 'quarterly' : 'monthly';
@@ -162,6 +162,8 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
           return productTemplates['1-pillar'][
             selectedPillar as keyof typeof onePillarChoices
           ];
+        case 'consulting':
+          return productTemplates['consulting'];
         default:
           return '';
       }
