@@ -1,14 +1,14 @@
 {
   "business-dev": {
     "name": "Business Development",
-    "description": "Enhance lead generation and client acquisition strategies."
+    "description": "Generate high-quality leads with AI automation."
   },
   "operations": {
     "name": "Operations",
-    "description": "Streamline internal processes and improve efficiency."
+    "description": "Improve efficiency with automated workflows."
   },
   "talent": {
     "name": "Talent",
-    "description": "Optimize talent management and team performance."
+    "description": "Hire, retain, and develop top-performing talent."
   }
 }
