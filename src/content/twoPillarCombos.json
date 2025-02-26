@@ -1,14 +1,14 @@
 {
   "talent-ops": {
     "name": "Talent + Operations",
-    "description": "Enhance team efficiency and streamline internal processes."
+    "description": "Build a high-performing with process efficiency."
   },
   "ops-bizdev": {
     "name": "Operations + Business Development",
-    "description": "Improve client acquisition and internal operational efficiency."
+    "description": "Grow your firm without operational bottlenecks."
   },
   "bizdev-talent": {
     "name": "Business Development + Talent",
-    "description": "Boost client acquisition while optimizing team performance."
+    "description": "Build a skilled team while scaling growth."
   }
 }
