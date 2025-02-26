@@ -628,15 +628,30 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                   <p key={index}>
                     {index === 0 ? (
                       <>
-                        You have selected the{' '}
+                       You have selected the{' '}
                         <span className="font-semibold text-highlight">
-                          {sentence.split('the ')[1]?.split('. Would')[0] ||
-                            sentence}
+                          {sentence.split('the ')[1]?.split('which includes ')[0]}
                         </span>
-                        .
+                        {sentence.includes('which includes') && (
+                          <>
+                            {' '}which includes{' '}
+                            <span className="font-semibold text-highlight">
+                              {sentence.split('which includes ')[1]?.split(' and ')[0]}
+                            </span>
+                          </>
+                        )}
+                        {sentence.includes(' and ') && (
+                          <>
+                            {' '}and{' '}
+                            <span className="font-semibold text-highlight">
+                              {sentence.split(' and ')[1]?.split('. Would')[0]}
+                            </span>
+                          </>
+                        )}
+.
                       </>
                     ) : (
-                      sentence + '.'
+                      sentence
                     )}
                   </p>
                 ))
