@@ -538,8 +538,8 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
               </DialogTitle>
               <DialogDescription className="text-muted-foreground">
                 {selectedProduct === '1-pillar'
-                  ? 'Choose one pillar for your FirmOS Growth Platform.'
-                  : 'Choose a pillar combination for your FirmOS Business Accelerator.'}
+                  ? 'Choose a single pillar to focus on.'
+                  : 'Choose a pillar combination to focus on.'}
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
