@@ -375,11 +375,17 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
             className="p-8 mx-auto mb-8 rounded-lg shadow-lg"
           >
             <h1 className="mb-4 text-5xl font-medium text-foreground">
-            Plans designed for every stage of growth
+              Plans designed for every stage of growth
             </h1>
             <p className="mx-auto text-accent-foreground text-balance">
-            Choose from our flexible pricing packages and save more when bundling multiple pillars.
+              Choose from our flexible pricing packages and save more when
+              bundling multiple pillars.
             </p>
+            <div className="flex w-full justify-center items-center">
+              <p className="bg-card mx-auto mt-8 text-accent-foreground text-balance px-4 py-2 rounded-xl">
+                Try FirmOS risk-free with our 30-day money-back guarantee.
+              </p>
+            </div>
           </motion.div>
           <motion.div
             initial={{ width: 0 }}
@@ -420,14 +426,13 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                     {product.quarterly_savings}% SAVINGS
                   </Badge>
                 )}
-                
-                {selectedBillingCycle == 'monthly' &&
-                product.monthly_savings && (
-                  <Badge className="absolute -top-3 right-4 z-10 bg-red-500 text-foreground px-3 py-1 rounded-full">
-                    {product.monthly_savings}% SAVINGS
-                  </Badge>
-                )}
-              
+
+              {selectedBillingCycle == 'monthly' && product.monthly_savings && (
+                <Badge className="absolute -top-3 right-4 z-10 bg-red-500 text-foreground px-3 py-1 rounded-full">
+                  {product.monthly_savings}% SAVINGS
+                </Badge>
+              )}
+
               <Card
                 className={`
                   relative h-full bg-card overflow-hidden
@@ -443,7 +448,7 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                   </CardTitle>
 
                   <CardDescription>
-                  <div className="text-accent-foreground text-xl flex justify-center items-center h-[100%] sm:h-[100%] md:h-[30px] lg:h-[50px] xl:h-[50px]">
+                    <div className="text-accent-foreground text-xl flex justify-center items-center h-[100%] sm:h-[100%] md:h-[30px] lg:h-[50px] xl:h-[50px]">
                       {product.description}
                     </div>
                   </CardDescription>
@@ -526,15 +531,14 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
         </div>
 
         <footer className="mt-12 text-sm text-center text-muted-foreground">
-        Copyright © 2025 FirmOS Inc. All rights reserved
+          Copyright © 2025 FirmOS Inc. All rights reserved
         </footer>
 
         <Dialog open={showPillarModal} onOpenChange={setShowPillarModal}>
           <DialogContent className="sm:max-w-[425px] bg-card text-card-foreground">
             <DialogHeader>
               <DialogTitle className="text-2xl font-bold">
-                Select{' '}
-                {selectedProduct === '1-pillar' ? 'Pillar' : 'Pillars'}
+                Select {selectedProduct === '1-pillar' ? 'Pillar' : 'Pillars'}
               </DialogTitle>
               <DialogDescription className="text-muted-foreground">
                 {selectedProduct === '1-pillar'
@@ -628,27 +632,37 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
                   <p key={index}>
                     {index === 0 ? (
                       <>
-                       You have selected the{' '}
+                        You have selected the{' '}
                         <span className="font-semibold text-highlight">
-                          {sentence.split('the ')[1]?.split('which includes ')[0]}
+                          {
+                            sentence
+                              .split('the ')[1]
+                              ?.split('which includes ')[0]
+                          }
                         </span>
                         {sentence.includes('which includes') && (
                           <>
-                            {' '}which includes{' '}
+                            {' '}
+                            which includes{' '}
                             <span className="font-semibold text-highlight">
-                              {sentence.split('which includes ')[1]?.split(' and ')[0]}
+                              {
+                                sentence
+                                  .split('which includes ')[1]
+                                  ?.split(' and ')[0]
+                              }
                             </span>
                           </>
                         )}
                         {sentence.includes(' and ') && (
                           <>
-                            {' '}and{' '}
+                            {' '}
+                            and{' '}
                             <span className="font-semibold text-highlight">
                               {sentence.split(' and ')[1]?.split('. Would')[0]}
                             </span>
                           </>
                         )}
-.
+                        .
                       </>
                     ) : (
                       sentence

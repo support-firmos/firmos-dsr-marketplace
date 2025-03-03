@@ -11,12 +11,12 @@
     "quarterly_savings": 50,
     "monthly_savings": 40,
     "features": [
-      "Optimize All Core Business Functions",
-      "Comprehensive AI-powered Automation",
-      "Bi-weekly Strategy Calls",
-      "Real-Time Insights Across All 3 Pillars",
-      "Cross-Pillar Adaptability",
-      "Biggest Savings, Maximum Growth"
+      "Optimize all core business functions",
+      "Custom AI-powered automation",
+      "Bi-weekly strategy calls",
+      "Real-time insights on all 3 pillars",
+      "Cross-pillar flexibility",
+      "Biggest savings, maximum growth"
     ]
   },
   {
@@ -31,12 +31,12 @@
     "quarterly_savings": 40,
     "monthly_savings": 30,
     "features": [
-      "Optimize two core business areas",
-      "Custom AI Automations",
-      "Bi-weekly Strategy Calls",
-      "Real-Time Performance Insights",
-      "Flexible Pillar Adjustments",
-      "Greater Impact, Faster Results"
+      "Optimize two core business functions",
+      "Custom AI automations",
+      "Bi-weekly strategy calls",
+      "Real-time performance insights",
+      "Cross-pillar flexibility",
+      "Greater impact, faster results"
     ]
   },
   {
@@ -50,10 +50,10 @@
     "price_quarterly": 2195,
     "quarterly_savings": 10,
     "features": [
-      "Optimize One Core Area",
-      "Custom AI Automations",
-      "Bi-weekly Strategy Calls",
-      "Real-Time Performance Insights"
+      "Optimize one core business function",
+      "Custom AI automations",
+      "Bi-weekly strategy calls",
+      "Real-time performance insights"
     ]
   },
   {
@@ -67,10 +67,10 @@
     "price_quarterly": 675,
     "quarterly_savings": 10,
     "features": [
-      "Bi-Weekly 60-Minute Sessions",
-      "Proven Operational Frameworks",
-      "Custom Playbooks & Templates",
-      "Tailored Insights and Support"
+      "Bi-weekly 60-minute sessions",
+      "Proven operational frameworks",
+      "Custom playbooks & templates",
+      "Tailored insights and support"
     ]
   }
 ]
