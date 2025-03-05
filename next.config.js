@@ -7,7 +7,7 @@ const nextConfig = {
         headers: [
           {
             key: 'X-Frame-Options',
-            value: '',
+            value: 'ALLOWALL', // Allows iframe embedding
           },
           {
             key: 'X-Content-Type-Options',
@@ -16,6 +16,11 @@ const nextConfig = {
           {
             key: 'X-XSS-Protection',
             value: '1; mode=block',
+          },
+          {
+            key: 'Content-Security-Policy',
+            value:
+              "default-src 'self'; frame-ancestors 'self' https://roi-calculator-mobile.vercel.app; frame-src 'self' https://roi-calculator-mobile.vercel.app;",
           },
         ],
       },
