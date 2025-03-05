@@ -530,14 +530,14 @@ export function BlockPage({ sessionData }: { sessionData: SessionData }) {
           ))}
         </div>
 
-        {/* ROI IFRAME  */}
+        {/* ROI IFRAME 
         <div className="w-full h-[140vh] mt-[100px] rounded-xl overflow-hidden hidden md:block ">
           <iframe
             src="https://roi-calculator-mobile.vercel.app/"
             className="w-full h-full border-0 bg-transparent"
             loading="lazy"
           ></iframe>
-        </div>
+        </div> */}
 
         <footer className="mt-12 text-sm text-center text-muted-foreground">
           Copyright © 2025 FirmOS Inc. All rights reserved
