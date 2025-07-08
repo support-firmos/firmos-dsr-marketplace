@@ -5,7 +5,7 @@ const TIMEOUT_MS = 120000; // Timeout set to 120 seconds
 
 // Function to fetch client details
 async function getClientDetails(clientId: string): Promise<{ fullName: string }> {
-  const url = `https://api.copilot.com/v1/clients/${clientId}`;
+  const url = `https://api.copilot.app/v1/clients/${clientId}`;
 
   // Prepare headers
   const headers: Record<string, string> = {
