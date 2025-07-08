@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
 
     console.log('📤 Sending request to Copilot API:', { recipientId, contractTemplateId });
 
-    const response = await fetch('https://api.copilot.com/v1/contracts', {
+    const response = await fetch('https://api.copilot.app/v1/contracts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
