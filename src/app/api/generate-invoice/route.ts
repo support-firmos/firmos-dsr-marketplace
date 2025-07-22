@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const BASE_URL = 'https://firmos-copilot-autoinvoice-899783477192.us-central1.run.app/generate_invoice';
+const BASE_URL = 'https://firmos-copilot-autoinvoice-service-899783477192.us-central1.run.app/generate';
 const TIMEOUT_MS = 120000; // Timeout set to 120 seconds
 
 // Function to fetch client details
